@@ -1,0 +1,26 @@
+version: '3'
+services:
+    elasticsearch:
+        image: docker.elastic.co/elasticsearch/elasticsearch:7.10.0
+        environment:
+            - discovery.type=single-node
+        ports:
+            - "9200:9200"
+
+    logstash:
+        image: docker.elastic.co/logstash/logstash:7.10.0
+        volumes:
+            - ./docker/logstash/filesystem/usr/share/logstash/config:/usr/share/logstash/config:ro
+            - ./docker/logstash/filesystem/usr/share/logstash/pipeline/:/usr/share/logstash/pipeline/:ro
+            - ./var/log/:/usr/share/logstash/logs:ro
+        ports:
+            - "5000:5000"
+        depends_on:
+            - elasticsearch
+
+    kibana:
+        image: docker.elastic.co/kibana/kibana:7.10.0
+        ports:
+            - "5601:5601"
+        depends_on:
+            - elasticsearch

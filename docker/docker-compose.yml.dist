@@ -1,0 +1,13 @@
+version: '3.4'
+services:
+    php:
+        build: ./docker/php
+        volumes:
+            - ${PROJECT_PATH}:/var/www/
+        working_dir: /var/www
+        environment:
+            - SERVER_ENV
+            - SSH_AUTH_SOCK=/ssh-agent
+        expose:
+            - 9000
+

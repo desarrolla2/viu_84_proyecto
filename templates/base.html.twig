@@ -1,0 +1,53 @@
+{% apply spaceless %}
+  <!doctype html>
+  <html class="h-100" data-bs-theme="auto" lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1" name="viewport">
+    <meta content="DataMiner is an application that retrieves data from your documents" name="description">
+    <meta content="Daniel González" name="author">
+    <link rel="icon" type="image/x-icon" href="/favicon.ico">
+    <title>DataMiner</title>
+    <link crossorigin="anonymous" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/css/bootstrap.min.css"
+          integrity="sha512-b2QcS5SsA8tZodcDtGRELiGv5SaKSk1vDHDaQRda0htPYWZ6046lr3kJ5bAAQdpV2mmA/4v0wQF9MyU6/pDIAg==" referrerpolicy="no-referrer" rel="stylesheet"/>
+    <link crossorigin="anonymous" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/css/bootstrap-utilities.min.css"
+          integrity="sha512-IspcQcJxnKFKfac3SzzLPXyGt77Twdkh1QmoLJlk+VDWCeGNVf7rCl/Srop+WwzX3S7IS2nxe9sfqLuMergysw==" referrerpolicy="no-referrer" rel="stylesheet"/>
+    <link crossorigin="anonymous" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+          integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" referrerpolicy="no-referrer" rel="stylesheet"/>
+    <link href="/style/cover.css" rel="stylesheet">
+    <link href="/style/main.css" rel="stylesheet">
+
+    <meta content="#712cf9" name="theme-color">
+  </head>
+  <body class="d-flex h-100 text-center text-bg-dark">
+  <div class="cover-container d-flex w-100 h-100 p-3 mx-auto flex-column">
+    <header >
+      <div>
+        <h1 class="float-md-start mb-0"><i class="fa-brands fa-fw fa-monero"></i>DataMiner</h1>
+        <nav class="nav nav-masthead justify-content-center float-md-end">
+          <a aria-current="page" class="nav-link fw-bold py-1 px-0 active" href="#">Home</a>
+          <a class="nav-link fw-bold py-1 px-0" href="https://github.com/desarrolla2/viu_47_proyecto_de_ingenieria_del_software">Features</a>
+          <a class="nav-link fw-bold py-1 px-0" href="https://twitter.com/desarrolla2">Contact</a>
+        </nav>
+      </div>
+    </header>
+
+    <main class="px-3 mt-5">
+      {% block content %}{% endblock %}
+    </main>
+
+    <footer class="mt-auto text-white-50">
+      <p>
+        Build with <i class="fa fa-fw fa-heart"></i> by <a href="https://www.linkedin.com/in/desarrolla2/" class="app-creator">Daniel González</a>.
+        Template adapted from the Bootstrap sample templates.
+      </p>
+    </footer>
+  </div>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g=="
+          crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <script crossorigin="anonymous" integrity="sha512-WW8/jxkELe2CAiE4LvQfwm1rajOS8PHasCCx+knHG0gBHt8EXxS6T6tJRTGuDQVnluuAvMxWF4j8SNFDKceLFg=="
+          referrerpolicy="no-referrer" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/js/bootstrap.min.js"></script>
+  <script src="/script/main.js"></script>
+  </body>
+  </html>
+{% endapply %}

@@ -1,0 +1,27 @@
+name: Test execution with docker
+
+on:
+    push:
+        branches: [ main ]
+    pull_request:
+        branches: [ main ]
+
+jobs:
+    test:
+        runs-on: ubuntu-latest
+        
+        steps:
+            -   name: Checkout
+                uses: actions/checkout@v2
+
+            -   name: Copy default configuration
+                run: cp docker/.env.dist .env; cp docker/docker-compose.yml.dist docker-compose.yml; cp docker/Makefile.dist Makefile
+
+            -   name: Build docker image
+                run: make docker-build
+
+            -   name: Install composer dependencies
+                run: make php-composer-install
+
+            -   name: Run tests
+                run: make tests

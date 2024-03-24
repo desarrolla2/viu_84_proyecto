@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+{% block content %}
+  <h1>Mine your data</h1>
+  <p class="lead"><i class="fa-brands fa-fw fa-monero"></i> DataMiner is an application that retrieves data from your documents. Drag a document into the box to start. Data miner is an activity of
+    the proyecto de ingeniería del software course at the International University of Valencia.</p>
+  <div id="app-drop-area">
+    <p class="mt-5">Drop your pdf files here</p>
+    <input accept="application/pdf" id="file" multiple onchange="handleFiles(this.files)" type="file" class="d-none">
+  </div>
+  <div id="app-responses">
+    <div class="app-response"></div>
+  </div>
+{% endblock %}

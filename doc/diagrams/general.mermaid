@@ -1,0 +1,13 @@
+C4Context
+    title Sistema de Extracción Automática de Información de Documentos PDF
+    Person(User, "Usuario", "Interactúa con el sistema")
+    System(Interface, "Interfaz del Sistema de Extracción Automática", "El sistema está disponible a través de diversas interfaces")
+    Rel(User, Interface, "Envía documento PDF")
+
+    Boundary(boundary, "Herramienta de Extracción Automática de Información") {
+        System(Generator, "Motor de Generación", "Convierte documentos PDF en texto legible")
+        System(Reader, "Motor de Lectura", "Interpreta el contenido del texto y genera un esquema de datos estructurado")
+    }
+
+    BiRel(Interface, Generator, "Convierte PDF a texto")
+    BiRel(Interface, Reader, "Lee el contenido y genera esquema")
