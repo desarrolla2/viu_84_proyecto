@@ -11,7 +11,8 @@
    línea de comandos".
 6. **Sprint 5: 20 Mayo – 2 Junio** Implementación de "5. Conjunto de pruebas" y de "6. Interfaz web"
 7. **Sprint 6: 3-16 Junio** Completar la documentación "7. Documentación formal del TFG".
-8. **Sprint 7: 17-30 Junio** Este sprint no tiene trabajo asignado. Se utilizará como margen para correcciones finales si fuera necesario.
+8. **Sprint 7: 17-30 Junio** Este sprint no tiene trabajo asignado. Se utilizará como margen para correcciones finales
+   si fuera necesario.
 
 ## TASK DEFINITION
 
