@@ -1,19 +1,24 @@
-SOURCE_DIR := ./source
-OUTPUT_DIR := ./output
+SOURCE := ./source
+OUTPUT := ./output
+TEMPLATE := ./templates
 
-SUBDIRS := $(wildcard $(SOURCE_DIR)/*)
-
-MD_FILES := $(foreach dir,$(SUBDIRS),$(wildcard $(dir)/*.md))
-
-PDF_FILES := $(patsubst $(SOURCE_DIR)/%,$(OUTPUT_DIR)/%,$(MD_FILES:.md=.pdf))
+SOURCE_SUBDIRECTORIES := $(wildcard $(SOURCE)/*)
+MARKDOWN_FILES := $(foreach dir,$(SOURCE_SUBDIRECTORIES),$(wildcard $(dir)/*.md))
+PDF_FILES := $(patsubst $(SOURCE)/%,$(OUTPUT)/%,$(MARKDOWN_FILES:.md=.pdf))
 
 .PHONY: all clean
 
 all: $(PDF_FILES)
 
-$(OUTPUT_DIR)/%.pdf: $(SOURCE_DIR)/%.md
+$(OUTPUT)/%.pdf: $(SOURCE)/%.md
 	@mkdir -p $(dir $@)
-	pandoc $< -o $@
+	@if [ -f $(TEMPLATE)/$(notdir $(basename $<)).tex ]; then \
+		echo " + Generating PDF with template for $<"; \
+		pandoc $< -o $@ --template=$(TEMPLATE)/$(notdir $(basename $<)).tex --pdf-engine=xelatex; \
+	else \
+		echo " - Generating PDF without template for $<"; \
+		pandoc $< -o $@ --pdf-engine=xelatex; \
+	fi
 
 clean:
-	@rm -rf $(OUTPUT_DIR)/*
+	@rm -rf $(OUTPUT)/*
