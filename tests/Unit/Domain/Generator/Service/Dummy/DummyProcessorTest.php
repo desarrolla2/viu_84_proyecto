@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Tests\Domain\Generator\Service\Dummy;
+namespace App\Tests\Unit\Domain\Generator\Service\Dummy;
 
 use App\Domain\Generator\Entity\Document;
 use App\Domain\Generator\Service\Dummy\DummyProcessor;
@@ -12,7 +12,7 @@ class DummyProcessorTest extends TestCase
     public function testProcessor()
     {
         $engine = new DummyProcessor();
-        $document = new Document('/var/www/tests/data/001/output/001.pdf');
+        $document = new Document('/var/www/tests/data/output/001/001.pdf');
         $text = $engine->execute($document);
 
         $this->assertInstanceOf(Text::class, $text);

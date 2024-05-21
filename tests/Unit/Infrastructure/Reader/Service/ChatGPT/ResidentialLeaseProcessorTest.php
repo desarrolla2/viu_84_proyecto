@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Tests\Infrastructure\Reader\Service\ChatGPT;
+namespace App\Tests\Unit\Infrastructure\Reader\Service\ChatGPT;
 
 use App\Domain\Reader\Entity\Person;
 use App\Domain\Reader\Entity\ResidentialLeaseAgreement;

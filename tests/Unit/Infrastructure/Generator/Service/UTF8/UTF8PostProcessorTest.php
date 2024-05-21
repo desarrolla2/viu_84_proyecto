@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Tests\Infrastructure\Generator\Service\UTF8;
+namespace App\Tests\Unit\Infrastructure\Generator\Service\UTF8;
 
 use App\Domain\Generator\ValueObject\Text;
 use App\Infrastructure\Generator\Service\UTF8\UTF8PostProcessor;

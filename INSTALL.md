@@ -56,7 +56,15 @@ make php-composer-install
 make docker-up
 ```
 
-### 4. Run tests
+### c. Run tests
+
+Edit the `.env` file to update the following values:
+
+* **APP_SECRET**: set a unique token. You can generate one using this command: < /dev/urandom tr -dc 'a-z0-9' | head -c
+  32
+* **OPENAI_AUTHENTICATION_TOKEN**: generate a valid token through the platform https://platform.openai.com/
+
+### 5. Run tests
 
 ```bash
 make tests

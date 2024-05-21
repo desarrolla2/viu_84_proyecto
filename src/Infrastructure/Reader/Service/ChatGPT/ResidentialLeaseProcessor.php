@@ -12,7 +12,7 @@ use Symfony\Component\HttpFoundation\Request;
 readonly class ResidentialLeaseProcessor implements ProcessorInterface
 {
     const ENDPOINT = 'https://api.openai.com/v1/chat/completions';
-    const MODEL = 'gpt-3.5-turbo';
+    const MODEL = 'gpt-4-turbo';
 
     public function __construct(private HttpClientInterface $httpClient, string $authenticationToken)
     {
@@ -23,11 +23,7 @@ readonly class ResidentialLeaseProcessor implements ProcessorInterface
     {
         $agreement = new ResidentialLeaseAgreement();
 
-        $content = 'Tengo el siguiente contrato:'.PHP_EOL
-            .$text->content().'[...]'.PHP_EOL.PHP_EOL.
-            'Completa los datos de la siguiente tabla'.PHP_EOL.
-            'PROPIETARIO: _NOMBRE_Y_APPELLIDOS_, _DNI_'.PHP_EOL.
-            'ARRENDATARIO: _NOMBRE_Y_APPELLIDOS_, _DNI_'.PHP_EOL;
+        $content = $this->content($text);
 
         $response = $this->request($content);
         $message = $this->getMessageFromResponse($response);
@@ -59,6 +55,14 @@ readonly class ResidentialLeaseProcessor implements ProcessorInterface
         return -1;
     }
 
+    private function content(Text $text): string
+    {
+        return ' A partir del documento que aparece a continuación, '.
+            ' deseo que identifiques a las partes, y construyas una tabla con el siguiente formato: '.
+            ' tipo (propietario o arrendatario) | nombre y apellidos | documento de identificación '.PHP_EOL
+            .$text->content();
+    }
+
     private function getMessageFromResponse(array $response): string
     {
         $message = array_values($response['choices'])[0]['message']['content'];
@@ -86,7 +90,10 @@ readonly class ResidentialLeaseProcessor implements ProcessorInterface
         $json = [
             'model' => self::MODEL,
             'messages' => [
-                ['role' => 'system', 'content' => 'Eres un abogado. Responde a cada pregunta con precisión y pocas palabras',],
+                [
+                    'role' => 'system',
+                    'content' => 'Eres un abogado. Responde a cada pregunta con precisión. Si una pregunta puede responderse con si o no, simplemente indica si, no justifiques tu respuesta',
+                ],
                 ['role' => 'user', 'content' => $content,],
             ],
         ];

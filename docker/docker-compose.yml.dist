@@ -10,4 +10,6 @@ services:
             - SSH_AUTH_SOCK=/ssh-agent
         expose:
             - 9000
+        ports:
+            - "8000:8000"
 

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Tests\Domain\Generator\Service\Dummy;
+namespace App\Tests\Unit\Domain\Generator\Service\Dummy;
 
 use App\Domain\Generator\Service\Dummy\DummyPostProcessor;
 use App\Domain\Generator\ValueObject\Text;

@@ -6,9 +6,9 @@ SOURCE_SUBDIRECTORIES := $(wildcard $(SOURCE)/*)
 MARKDOWN_FILES := $(foreach dir,$(SOURCE_SUBDIRECTORIES),$(wildcard $(dir)/*.md))
 PDF_FILES := $(patsubst $(SOURCE)/%,$(OUTPUT)/%,$(MARKDOWN_FILES:.md=.pdf))
 
-.PHONY: all clean
+.PHONY: clean build
 
-all: $(PDF_FILES)
+build: $(PDF_FILES)
 
 $(OUTPUT)/%.pdf: $(SOURCE)/%.md
 	@mkdir -p $(dir $@)

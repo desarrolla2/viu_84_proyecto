@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Tests\Domain\Generator\Service\Common;
+namespace App\Tests\Unit\Domain\Generator\Service\Common;
 
 use App\Domain\Generator\Service\Common\CharacterReplacePostProcessor;
 use App\Domain\Generator\ValueObject\Text;

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Tests\Infrastructure\Generator\Service\PdfToText;
+namespace App\Tests\Unit\Infrastructure\Generator\Service\PdfToText;
 
 use App\Domain\Generator\Entity\Document;
 use App\Domain\Generator\Service\GeneratorEngine;
@@ -14,12 +14,12 @@ class PdfToTextProcessorTest extends TestCase
     public function dataProviderForTestProcessor(): array
     {
         return [
-            ['/var/www/tests/data/001/output/001.pdf', ['CONTRATO DE ARRENDAMIENTO DE VIVIENDA']],
-            ['/var/www/tests/data/001/output/002.pdf', ['CONTRATO DE ARRENDAMIENTO DE VIVIENDA']],
-            ['/var/www/tests/data/001/output/003.pdf', ['CONTRATO DE ARRENDAMIENTO DE VIVIENDA']],
-            ['/var/www/tests/data/001/output/004.pdf', ['CONTRATO DE ARRENDAMIENTO DE VIVIENDA']],
-            ['/var/www/tests/data/001/output/005.pdf', ['CONTRATO DE ARRENDAMIENTO DE VIVIENDA']],
-            ['/var/www/tests/data/001/output/006.pdf', ['CONTRATO DE ARRENDAMIENTO DE VIVIENDA']],
+            ['/var/www/tests/data/output/001/001.pdf', ['CONTRATO DE ARRENDAMIENTO DE VIVIENDA']],
+            ['/var/www/tests/data/output/001/002.pdf', ['CONTRATO DE ARRENDAMIENTO DE VIVIENDA']],
+            ['/var/www/tests/data/output/001/003.pdf', ['CONTRATO DE ARRENDAMIENTO DE VIVIENDA']],
+            ['/var/www/tests/data/output/001/004.pdf', ['CONTRATO DE ARRENDAMIENTO DE VIVIENDA']],
+            ['/var/www/tests/data/output/001/005.pdf', ['CONTRATO DE ARRENDAMIENTO DE VIVIENDA']],
+            ['/var/www/tests/data/output/001/006.pdf', ['CONTRATO DE ARRENDAMIENTO DE VIVIENDA']],
         ];
     }
 
