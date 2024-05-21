@@ -2,11 +2,10 @@
 
 namespace App\Domain\Reader\Entity;
 
-class VehicleSaleAndPurchaseAgreement implements AgreementInterface
+class VehicleSaleAndPurchaseAgreement extends Agreement
 {
     private array $sellers = [];
     private array $buyers = [];
-
 
     public function addSeller(Person $person): void
     {

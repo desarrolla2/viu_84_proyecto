@@ -2,7 +2,7 @@
 
 namespace App\Domain\Reader\Service;
 
-use App\Domain\Reader\Entity\AgreementInterface;
+use App\Domain\Reader\Entity\Agreement;
 use App\Domain\Reader\ValueObject\Text;
 use Psr\Log\LoggerInterface;
 
@@ -28,12 +28,12 @@ class ReaderEngine
         }
     }
 
-    public function execute(Text $document): AgreementInterface
+    public function execute(Text $document): Agreement
     {
         return $this->executeProcessor($document);
     }
 
-    private function executeProcessor(Text $document): AgreementInterface
+    private function executeProcessor(Text $document): Agreement
     {
         $processor = $this->getProcessor($document);
         if (!$processor) {

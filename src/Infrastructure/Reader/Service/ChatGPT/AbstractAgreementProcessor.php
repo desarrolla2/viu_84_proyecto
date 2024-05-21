@@ -3,7 +3,7 @@
 namespace App\Infrastructure\Reader\Service\ChatGPT;
 
 use App\Domain\Component\HttpClient\HttpClientInterface;
-use App\Domain\Reader\Entity\AgreementInterface;
+use App\Domain\Reader\Entity\Agreement;
 use App\Domain\Reader\Entity\Person;
 use App\Domain\Reader\Service\ProcessorInterface;
 use App\Domain\Reader\ValueObject\Text;
@@ -31,10 +31,11 @@ abstract readonly class AbstractAgreementProcessor implements ProcessorInterface
         return -1;
     }
 
-    public function execute(Text $text): AgreementInterface
+    public function execute(Text $text): Agreement
     {
         $agreement = $this->agreement();
 
+        $this->date($agreement, $text);
         $this->parties($agreement, $text);
 
         return $agreement;
@@ -42,9 +43,9 @@ abstract readonly class AbstractAgreementProcessor implements ProcessorInterface
 
     abstract protected function contentForScore(Text $text): string;
 
-    abstract protected function agreement(): AgreementInterface;
+    abstract protected function agreement(): Agreement;
 
-    abstract protected function parties(AgreementInterface $agreement, Text $text): void;
+    abstract protected function parties(Agreement $agreement, Text $text): void;
 
     protected function person(array $data): Person
     {
@@ -79,5 +80,25 @@ abstract readonly class AbstractAgreementProcessor implements ProcessorInterface
         $message = mb_strtolower($message);
 
         return str_replace(['á', 'é', 'í', 'ó', 'ú'], ['a', 'e', 'i', 'o', 'u'], $message);
+    }
+
+    private function date(Agreement $agreement, Text $text): void
+    {
+        $content = $this->contentForDate($text);
+
+        $response = $this->request($content);
+        $message = $this->getMessageFromResponse($response);
+        $date = \DateTime::createFromFormat('d/m/Y', trim($message));
+        if (!$date) {
+            return;
+        }
+        $agreement->setDate($date);
+    }
+
+    private function contentForDate(Text $text): string
+    {
+        return ' A partir del documento que aparece a continuación, '.
+            ' deseo que identifiques la fecha en la que toma validez, indica la respuesta en formato dd/mm/YYYY'.PHP_EOL
+            .$text->content();
     }
 }

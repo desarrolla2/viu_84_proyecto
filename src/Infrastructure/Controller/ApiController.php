@@ -56,6 +56,8 @@ class ApiController extends AbstractController
             return $carry;
         }, []);
 
-        return new JsonResponse(['code' => Response::HTTP_OK, 'document' => (new \ReflectionClass($agreement))->getShortName(), 'parties' => $parties], Response::HTTP_OK);
+        return new JsonResponse(
+            ['code' => Response::HTTP_OK, 'document' => (new \ReflectionClass($agreement))->getShortName(), 'date' => $agreement->date()?->format('d/m/Y'), 'parties' => $parties], Response::HTTP_OK
+        );
     }
 }

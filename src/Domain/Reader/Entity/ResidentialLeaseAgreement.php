@@ -2,7 +2,7 @@
 
 namespace App\Domain\Reader\Entity;
 
-class ResidentialLeaseAgreement implements AgreementInterface
+class ResidentialLeaseAgreement extends Agreement
 {
     private array $landLords = [];
     private array $tenants = [];

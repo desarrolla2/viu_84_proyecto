@@ -2,13 +2,13 @@
 
 namespace App\Infrastructure\Reader\Service\ChatGPT;
 
-use App\Domain\Reader\Entity\AgreementInterface;
+use App\Domain\Reader\Entity\Agreement;
 use App\Domain\Reader\Entity\VehicleSaleAndPurchaseAgreement;
 use App\Domain\Reader\ValueObject\Text;
 
 readonly class VehicleSaleAndPurchaseProcessor extends AbstractAgreementProcessor
 {
-    protected function agreement(): AgreementInterface
+    protected function agreement(): Agreement
     {
         return new VehicleSaleAndPurchaseAgreement();
     }
@@ -22,7 +22,7 @@ readonly class VehicleSaleAndPurchaseProcessor extends AbstractAgreementProcesso
     /**
      * @param VehicleSaleAndPurchaseAgreement $agreement
      */
-    protected function parties(AgreementInterface $agreement, Text $text): void
+    protected function parties(Agreement $agreement, Text $text): void
     {
         $content = $this->contentForParties($text);
 
