@@ -3,24 +3,24 @@
 namespace App\Infrastructure\Reader\Service\ChatGPT;
 
 use App\Domain\Reader\Entity\AgreementInterface;
-use App\Domain\Reader\Entity\ResidentialLeaseAgreement;
+use App\Domain\Reader\Entity\VehicleSaleAndPurchaseAgreement;
 use App\Domain\Reader\ValueObject\Text;
 
-readonly class ResidentialLeaseProcessor extends AbstractAgreementProcessor
+readonly class VehicleSaleAndPurchaseProcessor extends AbstractAgreementProcessor
 {
     protected function agreement(): AgreementInterface
     {
-        return new ResidentialLeaseAgreement();
+        return new VehicleSaleAndPurchaseAgreement();
     }
 
     protected function contentForScore(Text $text): string
     {
-        return 'A partir del documento que aparece a continuación, ¿Se trata de un contrato de arrendamiento de una vivienda?'.PHP_EOL
+        return 'A partir del documento que aparece a continuación, ¿Se trata de un contrato de compraventa de vehiculo?'.PHP_EOL
             .$text->content();
     }
 
     /**
-     * @param ResidentialLeaseAgreement $agreement
+     * @param VehicleSaleAndPurchaseAgreement $agreement
      */
     protected function parties(AgreementInterface $agreement, Text $text): void
     {
@@ -33,14 +33,14 @@ readonly class ResidentialLeaseProcessor extends AbstractAgreementProcessor
         $lines = explode(PHP_EOL, $message);
         foreach ($lines as $line) {
             $line = trim($line, '|');
-            if (str_contains($line, 'propietario')) {
+            if (str_contains($line, 'vendedor')) {
                 $data = explode('|', $line);
-                $agreement->addLandLord($this->person($data));
+                $agreement->addSeller($this->person($data));
                 continue;
             }
-            if (str_contains($line, 'arrendatario')) {
+            if (str_contains($line, 'comprador')) {
                 $data = explode('|', $line);
-                $agreement->addTenant($this->person($data));
+                $agreement->addBuyer($this->person($data));
             }
         }
     }
@@ -49,7 +49,7 @@ readonly class ResidentialLeaseProcessor extends AbstractAgreementProcessor
     {
         return ' A partir del documento que aparece a continuación, '.
             ' deseo que identifiques a las partes, y construyas una tabla con el siguiente formato: '.
-            ' tipo (propietario o arrendatario) | nombre y apellidos | tipo de documento | documento de identificación '.PHP_EOL
+            ' tipo (vendedor o comprador) | nombre y apellidos | tipo de documento | documento de identificación '.PHP_EOL
             .$text->content();
     }
 }

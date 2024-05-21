@@ -4,7 +4,7 @@ namespace App\Tests\Unit\Infrastructure\Reader\Service\ChatGPT;
 
 use App\Domain\Component\HttpClient\HttpClientInterface;
 
-class ResidentialLeaseHTTPTestClient implements HttpClientInterface
+class AgreementProcessorHTTPTestClient implements HttpClientInterface
 {
     public function __construct(private array $responses)
     {

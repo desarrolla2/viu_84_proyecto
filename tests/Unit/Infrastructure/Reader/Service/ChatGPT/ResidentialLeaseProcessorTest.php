@@ -17,19 +17,27 @@ class ResidentialLeaseProcessorTest extends TestCase
         return [
             '001.pdf' => [
                 'responses' => [
-                    '{"id":"chatcmpl-8cEmZlb93XnvAiWBCCuMHtn3FbiLi","object":"chat.completion","created":1704123979,"model":"gpt-3.5-turbo-0613","choices":[{"index":0,"message":{"role":"assistant","content":"Sí"},"logprobs":null,"finish_reason":"stop"}]}',
-                    '{"id":"chatcmpl-8cFIY5s7frcfqvJCiVDAxbkFgUsnP","object":"chat.completion","created":1704125962,"model":"gpt-3.5-turbo-0613","choices":[{"index":0,"message":{"role":"assistant","content":"PROPIETARIO: Juan Pérez Martín, DNI 98765432B\nARRENDATARIO: Laura Fernández de la Fuente, DNI 82657077E"},"logprobs":null,"finish_reason":"stop"}],"usage":{"prompt_tokens":3782,"completion_tokens":40,"total_tokens":3822},"system_fingerprint":null}',
+                    '{"id":"chatcmpl-9RLp8sFJxbfOwR95SybZ4AoBqLQtA","object":"chat.completion","created":1716305774,"model":"gpt-4-turbo-2024-04-09","choices":[{"index":0,"message":{"role":"assistant","content":"Sí."},"logprobs":null,"finish_reason":"stop"}],"usage":{"prompt_tokens":3593,"completion_tokens":3,"total_tokens":3596},"system_fingerprint":"fp_294de9593d"}',
+                    '{"id":"chatcmpl-9RMMRXccQAfaZf3FGVvDiw1YjKYzX","object":"chat.completion","created":1716307839,"model":"gpt-4-turbo-2024-04-09","choices":[{"index":0,"message":{"role":"assistant","content":"| Tipo             | Nombre y Apellidos           | Tipo de documento | Documento de identificación |\n|------------------|------------------------------|--------------------|-----------------------------|\n| Propietario      | Juan Pérez Martín            | DNI                | 98765432B                   |\n| Arrendatario     | Laura Fernández de la Fuente | DNI                | 82657077E                   |"},"logprobs":null,"finish_reason":"stop"}],"usage":{"prompt_tokens":3613,"completion_tokens":81,"total_tokens":3694},"system_fingerprint":"fp_e9446dc58f"}',
                 ],
                 'landLords' => ['numbers' => ['98765432B']],
                 'tenants' => ['numbers' => ['82657077E']],
             ],
             '002.pdf' => [
                 'responses' => [
-                    '{"id":"chatcmpl-8cFLg6S77apGsfjImWgGxY6ErBDbH","object":"chat.completion","created":1704126156,"model":"gpt-3.5-turbo-0613","choices":[{"index":0,"message":{"role":"assistant","content":"Sí"},"logprobs":null,"finish_reason":"stop"}],"usage":{"prompt_tokens":3376,"completion_tokens":2,"total_tokens":3378},"system_fingerprint":null}',
-                    '{"id":"chatcmpl-8cFLh7RXwsz6UC2KPRxykXfWETspc","object":"chat.completion","created":1704126157,"model":"gpt-3.5-turbo-0613","choices":[{"index":0,"message":{"role":"assistant","content":"PROPIETARIO: Carlos Rodríguez Perez, 98765432B\nARRENDATARIO: Sofia Torres Gutierrez, 54321098C"},"logprobs":null,"finish_reason":"stop"}],"usage":{"prompt_tokens":3397,"completion_tokens":33,"total_tokens":3430},"system_fingerprint":null}',
+                    '{"id":"chatcmpl-9RMNMDpjjXH48Ne2j7GaFrMLlASGm","object":"chat.completion","created":1716307896,"model":"gpt-4-turbo-2024-04-09","choices":[{"index":0,"message":{"role":"assistant","content":"Sí."},"logprobs":null,"finish_reason":"stop"}],"usage":{"prompt_tokens":3386,"completion_tokens":3,"total_tokens":3389},"system_fingerprint":"fp_294de9593d"}',
+                    '{"id":"chatcmpl-9RMNOXZb6q7Niw0yKEOY4XU00Rofx","object":"chat.completion","created":1716307898,"model":"gpt-4-turbo-2024-04-09","choices":[{"index":0,"message":{"role":"assistant","content":"| Tipo              | Nombre y Apellidos       | Tipo de Documento | Documento de Identificación |\n|-------------------|--------------------------|-------------------|-----------------------------|\n| Propietario       | Carlos Rodríguez Perez   | NIF               | 98765432B                   |\n| Arrendatario      | Sofia Torres Gutierrez   | NIF               | 54321098C                   |"},"logprobs":null,"finish_reason":"stop"}],"usage":{"prompt_tokens":3421,"completion_tokens":82,"total_tokens":3503},"system_fingerprint":"fp_294de9593d"}',
                 ],
                 'landLords' => ['numbers' => ['98765432B']],
                 'tenants' => ['numbers' => ['54321098C']],
+            ],
+            '003.pdf' => [
+                'responses' => [
+                    '{"id":"chatcmpl-9RMOmFbQv8Fji5JMfAOjSN0RBqKE8","object":"chat.completion","created":1716307984,"model":"gpt-4-turbo-2024-04-09","choices":[{"index":0,"message":{"role":"assistant","content":"Sí."},"logprobs":null,"finish_reason":"stop"}],"usage":{"prompt_tokens":1245,"completion_tokens":3,"total_tokens":1248},"system_fingerprint":"fp_294de9593d"}',
+                    '{"id":"chatcmpl-9RMOnTyPQOFR3Bbx5diqeud2nl9vo","object":"chat.completion","created":1716307985,"model":"gpt-4-turbo-2024-04-09","choices":[{"index":0,"message":{"role":"assistant","content":"tipo | nombre y apellidos | tipo de documento | documento de identificación \n---|---|---|---\npropietario | Laura García Martínez | DNI | 56382214Z\narrendatario | Raúl Fernández Pérez | DNI | Z2772495B"},"logprobs":null,"finish_reason":"stop"}],"usage":{"prompt_tokens":1280,"completion_tokens":64,"total_tokens":1344},"system_fingerprint":"fp_e9446dc58f"}',
+                ],
+                'landLords' => ['numbers' => ['56382214Z']],
+                'tenants' => ['numbers' => ['Z2772495B']],
             ],
         ];
     }
@@ -38,7 +46,7 @@ class ResidentialLeaseProcessorTest extends TestCase
     public function testProcessor(array $responses, array $landLords, array $tenants): void
     {
         $engine = new ReaderEngine(new NullLogger());
-        $engine->addProcessor(new ResidentialLeaseProcessor(new ResidentialLeaseHTTPTestClient($responses), 'change.me'));
+        $engine->addProcessor(new ResidentialLeaseProcessor(new AgreementProcessorHTTPTestClient($responses), 'change.me'));
 
         /** @var ResidentialLeaseAgreement $agreement */
         $agreement = $engine->execute(new Text());

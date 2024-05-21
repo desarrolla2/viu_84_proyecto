@@ -33,5 +33,4 @@ class ResidentialLeaseAgreement implements AgreementInterface
     {
         return $this->tenants;
     }
-
 }

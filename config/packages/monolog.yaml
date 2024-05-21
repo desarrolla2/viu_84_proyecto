@@ -13,39 +13,53 @@ when@dev:
                 path: "%kernel.logs_dir%/%kernel.environment%.log"
                 level: debug
                 channels: [ "!event" ]
-            # uncomment to get logging in your browser
-            # you may have to allow bigger header sizes in your Web server configuration
-            #firephp:
-            #    type: firephp
-            #    level: info
-            #chromephp:
-            #    type: chromephp
-            #    level: info
             console:
                 type: console
                 process_psr_3_messages: false
                 channels: [ "!event", "!doctrine", "!console" ]
             
             generator:
-                type: stream
-                path: "%kernel.logs_dir%/generator.%kernel.environment%.log"
-                level: debug
-                formatter: 'monolog.formatter.logstash'
+                type: group
+                members: [ generator_log, generator_logstash ]
+                level: info
                 channels: [ generator ]
+            generator_log:
+                type: stream
+                path: "%kernel.logs_dir%/generator.%kernel.environment%.log.line"
+                formatter: monolog.formatter.line
+            generator_logstash:
+                type: stream
+                path: "%kernel.logs_dir%/generator.%kernel.environment%.log.logstash"
+                formatter: 'monolog.formatter.logstash'
+
             
             reader:
-                type: stream
-                path: "%kernel.logs_dir%/reader.%kernel.environment%.log"
-                level: debug
-                formatter: 'monolog.formatter.logstash'
+                type: group
+                members: [ reader_log, reader_logstash ]
                 channels: [ reader ]
-            
-            http_client:
+                level: info
+            reader_log:
                 type: stream
-                path: "%kernel.logs_dir%/http_client.%kernel.environment%.log"
-                level: debug
+                path: "%kernel.logs_dir%/reader.%kernel.environment%.log.line"
+                formatter: monolog.formatter.line
+            reader_logstash:
+                type: stream
+                path: "%kernel.logs_dir%/reader.%kernel.environment%.log.logstash"
                 formatter: 'monolog.formatter.logstash'
+
+            http_client:
+                type: group
+                members: [ http_client_log, http_client_logstash ]
                 channels: [ http_client ]
+                level: info
+            http_client_log:
+                type: stream
+                path: "%kernel.logs_dir%/http_client.%kernel.environment%.log.line"
+                formatter: monolog.formatter.line
+            http_client_logstash:
+                type: stream
+                path: "%kernel.logs_dir%/http_client.%kernel.environment%.log.logstash"
+                formatter: 'monolog.formatter.logstash'
 
 when@test:
     monolog:
