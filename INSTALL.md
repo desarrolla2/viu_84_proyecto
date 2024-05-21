@@ -15,7 +15,7 @@ read your instructions to install them.
 ### 1. Download source code from our repository
 
 ```bash
-git clone git@github.com:desarrolla2/viu_47_proyecto_de_ingenieria_del_software.git
+git clone git@github.com:desarrolla2/viu_84_trabajo_fin_grado
 ```
 
 ### 2. Configure your docker environment
