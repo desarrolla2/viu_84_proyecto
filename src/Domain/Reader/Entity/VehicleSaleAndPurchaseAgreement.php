@@ -33,4 +33,20 @@ class VehicleSaleAndPurchaseAgreement extends Agreement
     {
         return $this->buyers;
     }
+
+    public function toArray(): array
+    {
+        return array_merge(['date' => $this->date()?->format('d/m/Y')], [
+            'sellers' => array_reduce($this->sellers(), function (array $carry, Person $person): array {
+                $carry[] = $person->toArray();
+
+                return $carry;
+            }, []),
+            'buyers' => array_reduce($this->buyers(), function (array $carry, Person $person): array {
+                $carry[] = $person->toArray();
+
+                return $carry;
+            }, []),
+        ]);
+    }
 }

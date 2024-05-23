@@ -33,4 +33,20 @@ class ResidentialLeaseAgreement extends Agreement
     {
         return $this->tenants;
     }
+
+    public function toArray(): array
+    {
+        return array_merge(['date' => $this->date()?->format('d/m/Y')], [
+            'land_lords' => array_reduce($this->landLords(), function (array $carry, Person $person): array {
+                $carry[] = $person->toArray();
+
+                return $carry;
+            }, []),
+            'tenants' => array_reduce($this->landLords(), function (array $carry, Person $person): array {
+                $carry[] = $person->toArray();
+
+                return $carry;
+            }, []),
+        ]);
+    }
 }

@@ -17,4 +17,9 @@ readonly class Person
     {
         return $this->number;
     }
+
+    public function toArray(): array
+    {
+        return ['name' => $this->name(), 'number' => $this->number()];
+    }
 }

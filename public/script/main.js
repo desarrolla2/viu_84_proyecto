@@ -31,7 +31,7 @@ $(document).ready(function () {
 
     function cleanResponses() {
         let $responses = $('.app-response');
-        let number = 3;
+        let number = 1;
         if ($responses.length > number) {
             $responses.eq(number).fadeOut('slow', function () {
                 $(this).remove();
@@ -61,7 +61,7 @@ $(document).ready(function () {
                 data: JSON.stringify(data),
                 success: function (response) {
                     $loading.remove();
-                    let formatedResponse = JSON.stringify(response, null, 2 );
+                    let formatedResponse = JSON.stringify(response, null, 2);
                     let $response = $('<div class="app-response alert alert-success" role="alert" style="opacity: 0;">').text(formatedResponse);
                     $responses.prepend($response);
                     $response.fadeTo('slow', 1);

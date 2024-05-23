@@ -28,6 +28,7 @@ php-composer-update:
 # project related tasks
 
 serve:
+	$(MAKE) docker-up
 	docker-compose exec php bash -c "symfony server:start"
 
 tests:
