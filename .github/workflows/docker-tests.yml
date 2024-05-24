@@ -18,10 +18,10 @@ jobs:
                 run: cp docker/.env.dist .env; cp docker/docker-compose.yml.dist docker-compose.yml; cp docker/Makefile.dist Makefile
 
             -   name: Build docker image
-                run: make docker-build
+                run: make docker-php-build
 
             -   name: Install composer dependencies
                 run: make php-composer-install
 
             -   name: Run tests
-                run: make tests
+                run: make app-tests

@@ -3,19 +3,27 @@ WORKING_DIR=/var/www
 
 # docker related tasks
 
-docker-build:
-	$(MAKE) docker-build-base
+docker-all-build:
+	$(MAKE) docker-base-build
 	docker-compose build
 
-docker-build-base:
-	docker build -f docker/Dockerfile -t docker_base_image .
-
-docker-down:
+docker-all-down:
 	docker-compose down
 
-docker-up:
+docker-all-up:
 	$(MAKE) docker-build
 	docker-compose up -d --remove-orphans
+
+docker-base-build:
+	docker build -f docker/Dockerfile -t docker_base_image .
+
+docker-php-build:
+	$(MAKE) docker-base-build
+	docker-compose build php
+
+docker-php-up:
+	$(MAKE) docker-php-build
+	docker-compose up -d --remove-orphans php
 
 # php related tasks
 
@@ -27,13 +35,15 @@ php-composer-update:
 
 # project related tasks
 
-serve:
-	$(MAKE) docker-up
+app-run:
+	$(MAKE) docker-php-up
+	docker-compose exec php bash -c "php bin/console app:run /var/www/tests/data/output/001/001.pdf"
+
+app-serve:
+	$(MAKE) docker-php-up
 	docker-compose exec php bash -c "symfony server:start"
 
-tests:
-	docker-compose run php bash -c "vendor/bin/phpunit tests"
-
-run:
-	docker-compose run php bash -c "php bin/console app:run /var/www/tests/data/001/output/001.pdf"
+app-tests:
+	$(MAKE) docker-php-up
+	docker-compose exec -T php bash -c "vendor/bin/phpunit tests"
 
