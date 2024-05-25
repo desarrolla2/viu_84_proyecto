@@ -4,17 +4,17 @@ namespace App\Infrastructure\Reader\Service\ChatGPT;
 
 use App\Domain\Component\HttpClient\HttpClientInterface;
 use App\Domain\Reader\Entity\Agreement;
-use App\Domain\Reader\Entity\Person;
 use App\Domain\Reader\Service\ProcessorInterface;
 use App\Domain\Reader\ValueObject\Text;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Serializer\SerializerInterface;
 
 abstract readonly class AbstractAgreementProcessor implements ProcessorInterface
 {
     const ENDPOINT = 'https://api.openai.com/v1/chat/completions';
     const MODEL = 'gpt-4-turbo';
 
-    public function __construct(private HttpClientInterface $httpClient, string $authenticationToken)
+    public function __construct(protected SerializerInterface $serializer, private HttpClientInterface $httpClient, string $authenticationToken)
     {
         $this->httpClient->withOptions(['auth_bearer' => $authenticationToken,]);
     }
@@ -22,83 +22,66 @@ abstract readonly class AbstractAgreementProcessor implements ProcessorInterface
     public function score(Text $text): int
     {
         $response = $this->request($this->contentForScore($text));
-
-        $message = $this->getMessageFromResponse($response);
-        if (str_contains($message, 'si')) {
-            return 90;
+        if (str_contains(mb_strtolower($response), 'sí')) {
+            return 75;
+        }
+        if (str_contains(mb_strtolower($response), 'si')) {
+            return 75;
         }
 
         return -1;
     }
 
-    public function execute(Text $text): Agreement
+    public function execute(Text $text): ?Agreement
     {
-        $agreement = $this->agreement();
+        $content = $this->contentForContent($text);
+        $response = $this->request($content);
 
-        $this->date($agreement, $text);
-        $this->parties($agreement, $text);
+        $agreement = $this->serializer->deserialize($response, $this->agreementClassName(), 'json');
 
-        return $agreement;
+        return $agreement ?? null;
+
     }
+
+    abstract protected function agreementClassName(): string;
 
     abstract protected function contentForScore(Text $text): string;
 
-    abstract protected function agreement(): Agreement;
+    abstract protected function getTemplateForContent(): string;
 
-    abstract protected function parties(Agreement $agreement, Text $text): void;
-
-    protected function person(array $data): Person
-    {
-        return new Person(trim($data[1]), strtoupper(trim($data[3])));
-    }
-
-    protected function getMessageFromResponse(array $response): string
-    {
-        $message = array_values($response['choices'])[0]['message']['content'];
-
-        return $this->normalize($message);
-    }
-
-    protected function request(string $content): array
+    private function request(string $content): string
     {
         $json = [
             'model' => self::MODEL,
             'messages' => [
                 [
                     'role' => 'system',
-                    'content' => 'Eres un abogado. Responde a cada pregunta con precisión. No justifiques tu respuesta.',
+                    'content' => 'Eres un abogado. Responde a cada pregunta con precisión. No justifiques tu respuesta. No des detalles adicionales.',
                 ],
                 ['role' => 'user', 'content' => $content,],
             ],
         ];
+        $response = $this->httpClient->request(Request::METHOD_POST, self::ENDPOINT, ['json' => $json,]);
 
-        return $this->httpClient->request(Request::METHOD_POST, self::ENDPOINT, ['json' => $json,]);
+        return $this->getMessageFromResponse($response);
+    }
+
+    private function getMessageFromResponse(array $response): string
+    {
+        $message = array_values($response['choices'])[0]['message']['content'];
+
+        return $this->normalize($message);
     }
 
     private function normalize(string $message): string
     {
-        $message = mb_strtolower($message);
-
-        return str_replace(['á', 'é', 'í', 'ó', 'ú'], ['a', 'e', 'i', 'o', 'u'], $message);
+        return trim($message);
     }
 
-    private function date(Agreement $agreement, Text $text): void
+    private function contentForContent(Text $text): string
     {
-        $content = $this->contentForDate($text);
+        $template = $this->getTemplateForContent();
 
-        $response = $this->request($content);
-        $message = $this->getMessageFromResponse($response);
-        $date = \DateTime::createFromFormat('d/m/Y', trim($message));
-        if (!$date) {
-            return;
-        }
-        $agreement->setDate($date);
-    }
-
-    private function contentForDate(Text $text): string
-    {
-        return ' A partir del documento que aparece a continuación, '.
-            ' deseo que identifiques la fecha en la que toma validez, indica la respuesta en formato dd/mm/YYYY'.PHP_EOL
-            .$text->content();
+        return sprintf($template, $text->content());
     }
 }

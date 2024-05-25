@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Tests\Unit\Infrastructure\Reader\Service\ChatGPT;
+namespace App\Tests\Integration\Infrastructure\Reader\Service\ChatGPT;
 
 use App\Domain\Component\HttpClient\HttpClientInterface;
 

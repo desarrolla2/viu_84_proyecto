@@ -4,8 +4,13 @@ namespace App\Domain\Reader\Entity;
 
 readonly class Person
 {
-    public function __construct(private string $name, private string $number)
+    public function __construct(private string $name, private string $surname, private string $number)
     {
+    }
+
+    public function surname(): string
+    {
+        return $this->surname;
     }
 
     public function name(): string
@@ -16,10 +21,5 @@ readonly class Person
     public function number(): string
     {
         return $this->number;
-    }
-
-    public function toArray(): array
-    {
-        return ['name' => $this->name(), 'number' => $this->number()];
     }
 }

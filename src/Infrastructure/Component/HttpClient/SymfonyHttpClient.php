@@ -11,6 +11,8 @@ use Symfony\Contracts\Cache\ItemInterface;
 
 class SymfonyHttpClient implements HttpClientInterface
 {
+    private const DEFAULT_TTL = 3600 * 24 * 365;
+
     private readonly ?LoggerInterface $logger;
 
     public function __construct(private \Symfony\Contracts\HttpClient\HttpClientInterface $httpClient, private readonly CacheInterface $cache, LoggerInterface $httpClientLogger)
@@ -24,7 +26,7 @@ class SymfonyHttpClient implements HttpClientInterface
         $this->log(sprintf('[request]: "%s" "%s"', $method, $path), ['body' => json_encode($body), 'cache_key' => $cacheKey]);
 
         $responseContent = $this->cache->get($cacheKey, function (ItemInterface $item) use ($method, $path, $body): string {
-            $item->expiresAfter(3600 * 24 * 10);
+            $item->expiresAfter(self::DEFAULT_TTL);
 
             $this->log('[client]: sending request');
             $response = $this->httpClient->request($method, $path, $body);
