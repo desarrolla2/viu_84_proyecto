@@ -2,7 +2,7 @@
 
 namespace App\Domain\Reader\Entity;
 
-class DummyAgreement extends Agreement
+class DummyAgreement implements Agreement
 {
     public function parties(): array
     {

@@ -2,19 +2,30 @@
 
 namespace App\Domain\Reader\Entity;
 
-class VehicleSaleAndPurchaseAgreement extends Agreement
+readonly class VehicleSaleAndPurchaseAgreement implements Agreement
 {
-    private array $sellers = [];
-    private array $buyers = [];
-
-    public function addSeller(Person $person): void
-    {
-        $this->sellers[$person->number()] = $person;
+    public function __construct(
+        private \DateTimeInterface $date,
+        private Vehicle $vehicle,
+        private array $sellers = [],
+        private array $buyers = [],
+        private float $price = 0.0
+    ) {
     }
 
-    public function addBuyer(Person $person): void
+    public function price(): float
     {
-        $this->buyers[$person->number()] = $person;
+        return round($this->price, 2);
+    }
+
+    public function vehicle(): Vehicle
+    {
+        return $this->vehicle;
+    }
+
+    public function date(): \DateTimeInterface
+    {
+        return $this->date;
     }
 
     /** @return Person[] */
@@ -32,21 +43,5 @@ class VehicleSaleAndPurchaseAgreement extends Agreement
     public function buyers(): array
     {
         return $this->buyers;
-    }
-
-    public function toArray(): array
-    {
-        return array_merge(['date' => $this->date()?->format('d/m/Y')], [
-            'sellers' => array_reduce($this->sellers(), function (array $carry, Person $person): array {
-                $carry[] = $person->toArray();
-
-                return $carry;
-            }, []),
-            'buyers' => array_reduce($this->buyers(), function (array $carry, Person $person): array {
-                $carry[] = $person->toArray();
-
-                return $carry;
-            }, []),
-        ]);
     }
 }

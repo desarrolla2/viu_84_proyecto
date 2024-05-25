@@ -43,10 +43,10 @@ services:
         calls:
             -   'addProcessors': [ !tagged_iterator 'app.domain.reader.service.processor' ]
     
-    App\Infrastructure\Reader\Service\ChatGPT\ResidentialLeaseProcessor:
+    App\Infrastructure\Reader\Service\ChatGPT\ResidentialLeaseAgreementProcessor:
         arguments:
             $authenticationToken: '%env(string:OPENAI_AUTHENTICATION_TOKEN)%'
 
-    App\Infrastructure\Reader\Service\ChatGPT\VehicleSaleAndPurchaseProcessor:
+    App\Infrastructure\Reader\Service\ChatGPT\VehicleSaleAndPurchaseAgreementProcessor:
         arguments:
             $authenticationToken: '%env(string:OPENAI_AUTHENTICATION_TOKEN)%'

@@ -2,19 +2,30 @@
 
 namespace App\Domain\Reader\Entity;
 
-class ResidentialLeaseAgreement extends Agreement
+readonly class ResidentialLeaseAgreement implements Agreement
 {
-    private array $landLords = [];
-    private array $tenants = [];
-
-    public function addLandLord(Person $person): void
-    {
-        $this->landLords[$person->number()] = $person;
+    public function __construct(
+        private \DateTimeInterface $date,
+        private Property $property,
+        private array $landLords = [],
+        private array $tenants = [],
+        private float $monthlyRent = 0.0
+    ) {
     }
 
-    public function addTenant(Person $person): void
+    public function monthlyRent(): float
     {
-        $this->tenants[$person->number()] = $person;
+        return round($this->monthlyRent, 2);
+    }
+
+    public function date(): \DateTimeInterface
+    {
+        return $this->date;
+    }
+
+    public function property(): Property
+    {
+        return $this->property;
     }
 
     /** @return Person[] */
@@ -32,21 +43,5 @@ class ResidentialLeaseAgreement extends Agreement
     public function tenants(): array
     {
         return $this->tenants;
-    }
-
-    public function toArray(): array
-    {
-        return array_merge(['date' => $this->date()?->format('d/m/Y')], [
-            'land_lords' => array_reduce($this->landLords(), function (array $carry, Person $person): array {
-                $carry[] = $person->toArray();
-
-                return $carry;
-            }, []),
-            'tenants' => array_reduce($this->landLords(), function (array $carry, Person $person): array {
-                $carry[] = $person->toArray();
-
-                return $carry;
-            }, []),
-        ]);
     }
 }
