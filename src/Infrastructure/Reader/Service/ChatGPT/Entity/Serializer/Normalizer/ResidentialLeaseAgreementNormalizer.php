@@ -37,7 +37,7 @@ readonly class ResidentialLeaseAgreementNormalizer implements NormalizerInterfac
     {
         return [
             'date' => $object->date()->format('Y-m-d'),
-            'address' => $this->propertyNormalizer->normalize($object->property()),
+            'property' => $this->propertyNormalizer->normalize($object->property()),
             'land_lords' => array_map(function (Person $person): array {
                 return $this->personNormalizer->normalize($person);
             }, $object->landLords()),

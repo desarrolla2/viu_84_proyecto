@@ -4,6 +4,7 @@ namespace App\Infrastructure\Command;
 
 use App\Domain\Generator\Entity\Document as GeneratorDocument;
 use App\Domain\Generator\Service\GeneratorEngine;
+use App\Domain\Reader\Entity\Agreement;
 use App\Domain\Reader\Entity\DummyAgreement;
 use App\Domain\Reader\Service\ReaderEngine;
 use App\Domain\Reader\ValueObject\Text as ReaderText;
@@ -14,11 +15,13 @@ use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Serializer\SerializerInterface;
 
 #[AsCommand(name: 'app:run', description: 'extracts the content of a PDF document and if it is contract, indicates the parties involved',)]
 class AppCommand extends Command
 {
-    public function __construct(private readonly GeneratorEngine $generatorEngine, private readonly ReaderEngine $readerEngine)
+    public function __construct(private readonly GeneratorEngine $generatorEngine, private readonly ReaderEngine $readerEngine, private readonly SerializerInterface $serializer)
     {
         parent::__construct();
     }
@@ -45,15 +48,41 @@ class AppCommand extends Command
             return Command::SUCCESS;
         }
 
+        $response = $this->createResponse($agreement);
+        $rows = $this->formatArrayForTable($response);
+
         $table = new Table($output);
         $table->setHeaders(['Key', 'Value',]);
-        $table->addRow(['Document', (new \ReflectionClass($agreement))->getShortName()]);
-        foreach ($agreement->parties() as $person) {
-            $table->addRow(['Party', sprintf('%s, %s', $person->name(), $person->number())]);
-        }
+        $table->setRows($rows);
 
         $table->render();
 
         return Command::SUCCESS;
+    }
+
+    private function createResponse(Agreement $agreement): array
+    {
+        $content = $this->serializer->serialize($agreement, 'json');
+
+        return [
+            'code' => Response::HTTP_OK,
+            'type_of_document' => (new \ReflectionClass($agreement))->getShortName(),
+            'content' => json_decode($content, true),
+        ];
+    }
+
+    private function formatArrayForTable(array $array, string $prefix = ''): array
+    {
+        $rows = [];
+        foreach ($array as $key => $value) {
+            $fullKey = $prefix ? "{$prefix}.{$key}" : $key;
+            if (is_array($value)) {
+                $rows = array_merge($rows, $this->formatArrayForTable($value, $fullKey));
+            } else {
+                $rows[] = [$fullKey, $value];
+            }
+        }
+
+        return $rows;
     }
 }

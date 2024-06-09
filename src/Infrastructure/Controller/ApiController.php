@@ -14,11 +14,12 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Serializer\SerializerInterface;
 
 #[Route('/api')]
 class ApiController extends AbstractController
 {
-    public function __construct(private readonly GeneratorEngine $generatorEngine, private readonly ReaderEngine $readerEngine)
+    public function __construct(private readonly GeneratorEngine $generatorEngine, private readonly ReaderEngine $readerEngine, private readonly SerializerInterface $serializer)
     {
     }
 
@@ -66,11 +67,13 @@ class ApiController extends AbstractController
 
     private function createResponse(Agreement $agreement): JsonResponse
     {
+        $content = $this->serializer->serialize($agreement, 'json');
+
         return new JsonResponse(
             [
                 'code' => Response::HTTP_OK,
                 'type_of_document' => (new \ReflectionClass($agreement))->getShortName(),
-                'content' => $agreement->toArray(),
+                'content' => json_decode($content, true),
             ],
             Response::HTTP_OK
         );

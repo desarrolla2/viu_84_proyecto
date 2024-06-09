@@ -1,6 +1,6 @@
 {% apply spaceless %}
   <!doctype html>
-  <html class="h-100" data-bs-theme="auto" lang="en">
+  <html data-bs-theme="auto" lang="en">
   <head>
     <meta charset="utf-8">
     <meta content="width=device-width, initial-scale=1" name="viewport">
@@ -19,8 +19,8 @@
 
     <meta content="#712cf9" name="theme-color">
   </head>
-  <body class="d-flex h-100 text-center text-bg-dark">
-  <div class="cover-container d-flex w-100 h-100 p-3 mx-auto flex-column">
+  <body class="d-flex text-center text-bg-dark">
+  <div class="cover-container d-flex w-100  p-3 mx-auto flex-column">
     <header>
       <div>
         <h1 class="float-md-start mb-0"><i class="fa-brands fa-fw fa-monero"></i>DataMiner</h1>
@@ -32,11 +32,11 @@
       </div>
     </header>
 
-    <main class="px-3 mt-5">
+    <main class="px-3 mt-5 mb-5">
       {% block content %}{% endblock %}
     </main>
 
-    <footer class="mt-auto text-white-50">
+    <footer class="mt-auto text-white-50 mt-5">
       <p>
         Build with <i class="fa fa-fw fa-heart"></i> by <a href="https://www.linkedin.com/in/desarrolla2/" class="app-creator">Daniel González</a>.
         Template adapted from the Bootstrap sample templates.

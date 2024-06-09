@@ -13,7 +13,7 @@ class AddressNormalizer implements NormalizerInterface, DenormalizerInterface
     /** @param Address $object */
     public function normalize(mixed $object, ?string $format = null, array $context = []): array
     {
-        return ['address' => $object->address(), 'city' => $object->city(), 'country' => $object->country(), 'posta_code' => $object->postalCode()];
+        return ['address' => $object->address(), 'city' => $object->city(), 'country' => $object->country(), 'postal_code' => $object->postalCode()];
     }
 
     public function supportsNormalization(mixed $data, ?string $format = null, array $context = []): bool
