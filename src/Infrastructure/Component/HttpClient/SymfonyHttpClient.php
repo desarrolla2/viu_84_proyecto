@@ -11,9 +11,8 @@ use Symfony\Contracts\Cache\ItemInterface;
 
 class SymfonyHttpClient implements HttpClientInterface
 {
-    private const DEFAULT_TTL = 3600 * 24 * 365;
-
     private readonly ?LoggerInterface $logger;
+    private int $ttl = 3600 * 24 * 365;
 
     public function __construct(private \Symfony\Contracts\HttpClient\HttpClientInterface $httpClient, private readonly CacheInterface $cache, LoggerInterface $httpClientLogger)
     {
@@ -26,10 +25,11 @@ class SymfonyHttpClient implements HttpClientInterface
         $this->log(sprintf('[request]: "%s" "%s"', $method, $path), ['body' => json_encode($body), 'cache_key' => $cacheKey]);
 
         $responseContent = $this->cache->get($cacheKey, function (ItemInterface $item) use ($method, $path, $body): string {
-            $item->expiresAfter(self::DEFAULT_TTL);
+            $item->expiresAfter($this->ttl);
 
             $this->log('[client]: sending request');
             $response = $this->httpClient->request($method, $path, $body);
+
 
             if ($response->getStatusCode() !== Response::HTTP_OK) {
                 $this->log(sprintf('[response]: "%s"', $response->getStatusCode()), ['body' => $response->getContent(),]);
@@ -43,6 +43,11 @@ class SymfonyHttpClient implements HttpClientInterface
         $this->log(sprintf('[response]: "%s"', Response::HTTP_OK), ['body' => $responseContent,]);
 
         return json_decode($responseContent, true);
+    }
+
+    public function setTtl(int $ttl): void
+    {
+        $this->ttl = $ttl;
     }
 
     public function withOptions(array $array): void
