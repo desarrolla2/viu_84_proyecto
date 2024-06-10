@@ -19,11 +19,13 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 class PersonNormalizer implements NormalizerInterface, DenormalizerInterface
 {
     /** @param Person $object */
+    /** @param string[] $context */
     public function normalize(mixed $object, ?string $format = null, array $context = []): array
     {
         return ['name' => $object->name(), 'surname' => $object->surname(), 'number' => $object->number()];
     }
 
+    /** @param string[] $context */
     public function supportsNormalization(mixed $data, ?string $format = null, array $context = []): bool
     {
         return $data instanceof Person;
@@ -31,9 +33,10 @@ class PersonNormalizer implements NormalizerInterface, DenormalizerInterface
 
     public function getSupportedTypes(?string $format): array
     {
-        return [Person::class => true, ];
+        return [Person::class => true,];
     }
 
+    /** @param string[] $context */
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): Person
     {
         $name = $data['name'] ?? '';
@@ -43,6 +46,7 @@ class PersonNormalizer implements NormalizerInterface, DenormalizerInterface
         return new Person($name, $surname, $number);
     }
 
+    /** @param string[] $context */
     public function supportsDenormalization(mixed $data, string $type, ?string $format = null, array $context = []): bool
     {
         return $type === Person::class;

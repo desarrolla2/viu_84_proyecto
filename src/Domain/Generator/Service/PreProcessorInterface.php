@@ -14,7 +14,7 @@ use App\Domain\Generator\Entity\Document;
 
 interface PreProcessorInterface
 {
-    public static function order();
+    public static function order(): int;
 
     public function execute(Document $document): void;
 }

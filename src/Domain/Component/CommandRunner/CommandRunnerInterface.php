@@ -12,5 +12,6 @@ namespace App\Domain\Component\CommandRunner;
 
 interface CommandRunnerInterface
 {
+    /** @param string[] $command */
     public function run(array $command): string;
 }

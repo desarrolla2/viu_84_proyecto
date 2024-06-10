@@ -10,6 +10,7 @@
 
 namespace App\Infrastructure\Reader\Service\ChatGPT\Entity\Serializer\Normalizer;
 
+use App\Domain\Generator\Service\PreProcessorInterface;
 use App\Domain\Reader\Entity\Person;
 use App\Domain\Reader\Entity\Vehicle;
 use App\Domain\Reader\Entity\VehicleSaleAndPurchaseAgreementInterface;
@@ -25,6 +26,7 @@ readonly class VehicleSaleAndPurchaseAgreementNormalizer implements NormalizerIn
     {
     }
 
+    /** @param string[] $context */
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): VehicleSaleAndPurchaseAgreementInterface
     {
         $date = $data['date'] ? DateTime::createFromFormat('Y-m-d', $data['date']) : '';
@@ -43,6 +45,7 @@ readonly class VehicleSaleAndPurchaseAgreementNormalizer implements NormalizerIn
 
 
     /** @param VehicleSaleAndPurchaseAgreementInterface $object */
+    /** @param string[] $context */
     public function normalize(mixed $object, ?string $format = null, array $context = []): array
     {
         return [

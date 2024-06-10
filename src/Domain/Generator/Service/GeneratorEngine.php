@@ -16,8 +16,11 @@ use Psr\Log\LoggerInterface;
 
 class GeneratorEngine
 {
+    /* @var PreProcessorInterface[] $preProcessors */
     private array $preProcessors = [];
+    /* @var ProcessorInterface[] $processors */
     private array $processors = [];
+    /* @var PostProcessorInterface[] $postProcessors */
     private array $postProcessors = [];
     private readonly ?LoggerInterface $logger;
 
@@ -31,7 +34,8 @@ class GeneratorEngine
         $this->postProcessors[] = $postProcessor;
     }
 
-    public function addPostProcessors($postProcessors): void
+    /* @param PostProcessorInterface[] $postProcessors */
+    public function addPostProcessors(iterable $postProcessors): void
     {
         foreach ($postProcessors as $postProcessor) {
             $this->addPostProcessor($postProcessor);
@@ -43,7 +47,8 @@ class GeneratorEngine
         $this->preProcessors[] = $preProcessor;
     }
 
-    public function addPreProcessors($preProcessors): void
+    /* @param PreProcessorInterface[] $preProcessors */
+    public function addPreProcessors(iterable $preProcessors): void
     {
         foreach ($preProcessors as $preProcessor) {
             $this->addPreProcessor($preProcessor);
@@ -55,7 +60,8 @@ class GeneratorEngine
         $this->processors[] = $processor;
     }
 
-    public function addProcessors($processors): void
+    /* @param ProcessorInterface[] $processors */
+    public function addProcessors(iterable $processors): void
     {
         foreach ($processors as $processor) {
             $this->addProcessor($processor);
@@ -72,7 +78,6 @@ class GeneratorEngine
 
     private function executePostProcessors(Text $text): Text
     {
-        /** @var PostProcessorInterface $postProcessor */
         foreach ($this->postProcessors as $postProcessor) {
             $this->log(sprintf('Executing Post Processor "%s"', get_class($postProcessor)), ['order' => $postProcessor->order(), 'input' => $text->content()]);
             $text = $postProcessor->execute($text);
@@ -83,7 +88,6 @@ class GeneratorEngine
 
     private function executePreProcessors(Document $document): void
     {
-        /** @var PreProcessorInterface $preProcessor */
         foreach ($this->preProcessors as $preProcessor) {
             $this->log(sprintf('Executing Pre Processor "%s"', get_class($preProcessor)), ['order' => $preProcessor->order(), 'input' => $document->path()]);
             $preProcessor->execute($document);
@@ -102,7 +106,6 @@ class GeneratorEngine
     private function getProcessor(Document $document): ProcessorInterface
     {
         $scores = [];
-        /** @var ProcessorInterface $processor */
         foreach ($this->processors as $processor) {
             $score = $processor->score($document);
             $scores[] = ['score' => $score, 'processor' => $processor];
@@ -117,6 +120,7 @@ class GeneratorEngine
         return reset($scores)['processor'];
     }
 
+    /** @param string[] $context */
     private function log(string $message, array $context = []): void
     {
         if (!$this->logger) {

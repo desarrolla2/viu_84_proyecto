@@ -24,11 +24,13 @@ readonly class PropertyNormalizer implements NormalizerInterface, DenormalizerIn
     }
 
     /** @param Property $object */
+    /** @param string[] $context */
     public function normalize(mixed $object, ?string $format = null, array $context = []): array
     {
         return ['address' => $this->addressNormalizer->normalize($object->address())];
     }
 
+    /** @param string[] $context */
     public function supportsNormalization(mixed $data, ?string $format = null, array $context = []): bool
     {
         return $data instanceof Property;
@@ -36,9 +38,10 @@ readonly class PropertyNormalizer implements NormalizerInterface, DenormalizerIn
 
     public function getSupportedTypes(?string $format): array
     {
-        return [Property::class => true, ];
+        return [Property::class => true,];
     }
 
+    /** @param string[] $context */
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): Property
     {
         $address = $data['address'] ? $this->addressNormalizer->denormalize($data['address'], Address::class) : new Address('', '', '', '');
@@ -46,6 +49,7 @@ readonly class PropertyNormalizer implements NormalizerInterface, DenormalizerIn
         return new Property($address);
     }
 
+    /** @param string[] $context */
     public function supportsDenormalization(mixed $data, string $type, ?string $format = null, array $context = []): bool
     {
         return $type === Property::class;

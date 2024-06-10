@@ -15,7 +15,7 @@ use App\Domain\Generator\Service\PreProcessorInterface;
 
 class DummyPreProcessor implements PreProcessorInterface
 {
-    public static function order()
+    public static function order(): int
     {
         return 0;
     }

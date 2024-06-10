@@ -12,7 +12,10 @@ namespace App\Domain\Component\HttpClient;
 
 interface HttpClientInterface
 {
+    /* @param string[] $body */
+    /* @return  string[] */
     public function request(string $method, string $path, array $body): array;
 
+    /* @param string[] $array */
     public function withOptions(array $array): void;
 }

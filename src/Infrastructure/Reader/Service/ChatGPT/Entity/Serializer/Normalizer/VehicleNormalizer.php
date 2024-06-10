@@ -19,9 +19,10 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 class VehicleNormalizer implements NormalizerInterface, DenormalizerInterface
 {
     /** @param Vehicle $object */
+    /** @param string[] $context */
     public function normalize(mixed $object, ?string $format = null, array $context = []): array
     {
-        return ['make' => $object->make(), 'model' => $object->model(), 'license_plate' => $object->licensePlate(), ];
+        return ['make' => $object->make(), 'model' => $object->model(), 'license_plate' => $object->licensePlate(),];
     }
 
     public function supportsNormalization(mixed $data, ?string $format = null, array $context = []): bool
@@ -31,9 +32,10 @@ class VehicleNormalizer implements NormalizerInterface, DenormalizerInterface
 
     public function getSupportedTypes(?string $format): array
     {
-        return [Vehicle::class => true, ];
+        return [Vehicle::class => true,];
     }
 
+    /** @param string[] $context */
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): Vehicle
     {
         $make = $data['make'] ?? '';
@@ -43,6 +45,7 @@ class VehicleNormalizer implements NormalizerInterface, DenormalizerInterface
         return new Vehicle($make, $modelo, $licencePlate);
     }
 
+    /** @param string[] $context */
     public function supportsDenormalization(mixed $data, string $type, ?string $format = null, array $context = []): bool
     {
         return $type === Vehicle::class;

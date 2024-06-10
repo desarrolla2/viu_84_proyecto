@@ -26,6 +26,7 @@ readonly class ResidentialLeaseAgreementNormalizer implements NormalizerInterfac
     {
     }
 
+    /** @param string[] $context */
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): ResidentialLeaseAgreementInterface
     {
         $date = $data['date'] ? DateTime::createFromFormat('Y-m-d', $data['date']) : '';
@@ -42,6 +43,7 @@ readonly class ResidentialLeaseAgreementNormalizer implements NormalizerInterfac
     }
 
     /** @param ResidentialLeaseAgreementInterface $object */
+    /** @param string[] $context */
     public function normalize(mixed $object, ?string $format = null, array $context = []): array
     {
         return [
@@ -57,6 +59,7 @@ readonly class ResidentialLeaseAgreementNormalizer implements NormalizerInterfac
         ];
     }
 
+    /** @param string[] $context */
     public function supportsNormalization(mixed $data, ?string $format = null, array $context = []): bool
     {
         return $data instanceof ResidentialLeaseAgreementInterface;
@@ -64,9 +67,10 @@ readonly class ResidentialLeaseAgreementNormalizer implements NormalizerInterfac
 
     public function getSupportedTypes(?string $format): array
     {
-        return [ResidentialLeaseAgreementInterface::class => true, ];
+        return [ResidentialLeaseAgreementInterface::class => true,];
     }
 
+    /** @param string[] $context */
     public function supportsDenormalization(mixed $data, string $type, ?string $format = null, array $context = []): bool
     {
         return $type === ResidentialLeaseAgreementInterface::class;
