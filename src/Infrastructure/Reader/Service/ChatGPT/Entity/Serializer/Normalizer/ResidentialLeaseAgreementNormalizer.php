@@ -13,7 +13,7 @@ namespace App\Infrastructure\Reader\Service\ChatGPT\Entity\Serializer\Normalizer
 use App\Domain\Reader\Entity\Address;
 use App\Domain\Reader\Entity\Person;
 use App\Domain\Reader\Entity\Property;
-use App\Domain\Reader\Entity\ResidentialLeaseAgreement;
+use App\Domain\Reader\Entity\ResidentialLeaseAgreementInterface;
 use DateTime;
 use Symfony\Component\DependencyInjection\Attribute\AutoconfigureTag;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
@@ -26,7 +26,7 @@ readonly class ResidentialLeaseAgreementNormalizer implements NormalizerInterfac
     {
     }
 
-    public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): ResidentialLeaseAgreement
+    public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): ResidentialLeaseAgreementInterface
     {
         $date = $data['date'] ? DateTime::createFromFormat('Y-m-d', $data['date']) : '';
         $property = $data['property'] ? $this->propertyNormalizer->denormalize($data['property'], Property::class) : new Property(new Address('', '', '', ''));
@@ -38,10 +38,10 @@ readonly class ResidentialLeaseAgreementNormalizer implements NormalizerInterfac
         }, $data['tenants']) : [];
         $monthlyRentalPrice = (float) $data['monthly_rent'] ?? 0.0;
 
-        return new ResidentialLeaseAgreement($date, $property, $landLords, $tenants, $monthlyRentalPrice);
+        return new ResidentialLeaseAgreementInterface($date, $property, $landLords, $tenants, $monthlyRentalPrice);
     }
 
-    /** @param ResidentialLeaseAgreement $object */
+    /** @param ResidentialLeaseAgreementInterface $object */
     public function normalize(mixed $object, ?string $format = null, array $context = []): array
     {
         return [
@@ -59,16 +59,16 @@ readonly class ResidentialLeaseAgreementNormalizer implements NormalizerInterfac
 
     public function supportsNormalization(mixed $data, ?string $format = null, array $context = []): bool
     {
-        return $data instanceof ResidentialLeaseAgreement;
+        return $data instanceof ResidentialLeaseAgreementInterface;
     }
 
     public function getSupportedTypes(?string $format): array
     {
-        return [ResidentialLeaseAgreement::class => true, ];
+        return [ResidentialLeaseAgreementInterface::class => true, ];
     }
 
     public function supportsDenormalization(mixed $data, string $type, ?string $format = null, array $context = []): bool
     {
-        return $type === ResidentialLeaseAgreement::class;
+        return $type === ResidentialLeaseAgreementInterface::class;
     }
 }

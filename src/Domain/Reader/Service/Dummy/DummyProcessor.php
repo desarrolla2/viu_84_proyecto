@@ -10,16 +10,16 @@
 
 namespace App\Domain\Reader\Service\Dummy;
 
-use App\Domain\Reader\Entity\Agreement;
-use App\Domain\Reader\Entity\DummyAgreement;
+use App\Domain\Reader\Entity\AgreementInterface;
+use App\Domain\Reader\Entity\DummyAgreementInterface;
 use App\Domain\Reader\Service\ProcessorInterface;
 use App\Domain\Reader\ValueObject\Text;
 
 class DummyProcessor implements ProcessorInterface
 {
-    public function execute(Text $text): Agreement
+    public function execute(Text $text): AgreementInterface
     {
-        return new DummyAgreement();
+        return new DummyAgreementInterface();
     }
 
     public function score(Text $text): int

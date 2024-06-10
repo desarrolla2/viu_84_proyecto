@@ -12,8 +12,8 @@ namespace App\Infrastructure\Command;
 
 use App\Domain\Generator\Entity\Document as GeneratorDocument;
 use App\Domain\Generator\Service\GeneratorEngine;
-use App\Domain\Reader\Entity\Agreement;
-use App\Domain\Reader\Entity\DummyAgreement;
+use App\Domain\Reader\Entity\AgreementInterface;
+use App\Domain\Reader\Entity\DummyAgreementInterface;
 use App\Domain\Reader\Service\ReaderEngine;
 use App\Domain\Reader\ValueObject\Text as ReaderText;
 use ReflectionClass;
@@ -51,7 +51,7 @@ class AppCommand extends Command
 
         $readerText = new ReaderText($text->content());
         $agreement = $this->readerEngine->execute($readerText);
-        if ($agreement instanceof DummyAgreement) {
+        if ($agreement instanceof DummyAgreementInterface) {
             $io->writeln('<error>error</error>: document type could not be determined');
 
             return Command::SUCCESS;
@@ -69,7 +69,7 @@ class AppCommand extends Command
         return Command::SUCCESS;
     }
 
-    private function createResponse(Agreement $agreement): array
+    private function createResponse(AgreementInterface $agreement): array
     {
         $content = $this->serializer->serialize($agreement, 'json');
 

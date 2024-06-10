@@ -12,8 +12,8 @@ namespace App\Infrastructure\Controller;
 
 use App\Domain\Generator\Entity\Document as GeneratorDocument;
 use App\Domain\Generator\Service\GeneratorEngine;
-use App\Domain\Reader\Entity\Agreement;
-use App\Domain\Reader\Entity\DummyAgreement;
+use App\Domain\Reader\Entity\AgreementInterface;
+use App\Domain\Reader\Entity\DummyAgreementInterface;
 use App\Domain\Reader\Service\ReaderEngine;
 use App\Domain\Reader\ValueObject\Text as ReaderText;
 use ReflectionClass;
@@ -56,7 +56,7 @@ class ApiController extends AbstractController
         $readerText = new ReaderText($text->content());
         $agreement = $this->readerEngine->execute($readerText);
 
-        if ($agreement instanceof DummyAgreement) {
+        if ($agreement instanceof DummyAgreementInterface) {
             return $this->documentCouldNotBeDetermined();
         }
 
@@ -73,7 +73,7 @@ class ApiController extends AbstractController
         return new JsonResponse(['code' => Response::HTTP_BAD_REQUEST, 'message' => 'Document type could not be determined'], Response::HTTP_BAD_REQUEST);
     }
 
-    private function createResponse(Agreement $agreement): JsonResponse
+    private function createResponse(AgreementInterface $agreement): JsonResponse
     {
         $content = $this->serializer->serialize($agreement, 'json');
 

@@ -13,7 +13,7 @@ namespace App\Domain\Reader\Entity;
 use DateTime;
 use DateTimeInterface;
 
-class DummyAgreement implements Agreement
+class DummyAgreementInterface implements AgreementInterface
 {
     public function parties(): array
     {

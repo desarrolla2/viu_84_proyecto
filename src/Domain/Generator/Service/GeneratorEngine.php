@@ -111,7 +111,7 @@ class GeneratorEngine
         }
 
         usort($scores, function (array $processor1, array $processor2) {
-            return $processor2['score'] <> $processor1['score'];
+            return $processor2['score'] <=> $processor1['score'];
         });
 
         return reset($scores)['processor'];

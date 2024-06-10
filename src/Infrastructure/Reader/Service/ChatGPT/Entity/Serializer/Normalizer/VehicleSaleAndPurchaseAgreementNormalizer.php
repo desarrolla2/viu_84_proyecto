@@ -12,7 +12,7 @@ namespace App\Infrastructure\Reader\Service\ChatGPT\Entity\Serializer\Normalizer
 
 use App\Domain\Reader\Entity\Person;
 use App\Domain\Reader\Entity\Vehicle;
-use App\Domain\Reader\Entity\VehicleSaleAndPurchaseAgreement;
+use App\Domain\Reader\Entity\VehicleSaleAndPurchaseAgreementInterface;
 use DateTime;
 use Symfony\Component\DependencyInjection\Attribute\AutoconfigureTag;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
@@ -25,10 +25,10 @@ readonly class VehicleSaleAndPurchaseAgreementNormalizer implements NormalizerIn
     {
     }
 
-    public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): VehicleSaleAndPurchaseAgreement
+    public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): VehicleSaleAndPurchaseAgreementInterface
     {
         $date = $data['date'] ? DateTime::createFromFormat('Y-m-d', $data['date']) : '';
-        $vehicle = $data['vehicle'] ? $this->vehicleNormalizer->denormalize($data['vehicle'], Vehicle::class) : new Vehicle('', '', '',);
+        $vehicle = $data['vehicle'] ? $this->vehicleNormalizer->denormalize($data['vehicle'], Vehicle::class) : new Vehicle('', '', '');
         $sellers = $data['sellers'] ? array_map(function (array $item): Person {
             return $this->personNormalizer->denormalize($item, Person::class);
         }, $data['sellers']) : [];
@@ -38,11 +38,11 @@ readonly class VehicleSaleAndPurchaseAgreementNormalizer implements NormalizerIn
 
         $price = (float) $data['price'] ?? 0.0;
 
-        return new VehicleSaleAndPurchaseAgreement($date, $vehicle, $sellers, $buyers, $price);
+        return new VehicleSaleAndPurchaseAgreementInterface($date, $vehicle, $sellers, $buyers, $price);
     }
 
 
-    /** @param VehicleSaleAndPurchaseAgreement $object */
+    /** @param VehicleSaleAndPurchaseAgreementInterface $object */
     public function normalize(mixed $object, ?string $format = null, array $context = []): array
     {
         return [
@@ -60,16 +60,16 @@ readonly class VehicleSaleAndPurchaseAgreementNormalizer implements NormalizerIn
 
     public function supportsNormalization(mixed $data, ?string $format = null, array $context = []): bool
     {
-        return $data instanceof VehicleSaleAndPurchaseAgreement;
+        return $data instanceof VehicleSaleAndPurchaseAgreementInterface;
     }
 
     public function getSupportedTypes(?string $format): array
     {
-        return [VehicleSaleAndPurchaseAgreement::class => true,];
+        return [VehicleSaleAndPurchaseAgreementInterface::class => true];
     }
 
     public function supportsDenormalization(mixed $data, string $type, ?string $format = null, array $context = []): bool
     {
-        return $type === VehicleSaleAndPurchaseAgreement::class;
+        return $type === VehicleSaleAndPurchaseAgreementInterface::class;
     }
 }

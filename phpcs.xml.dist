@@ -7,8 +7,12 @@
     <arg name="extensions" value="php"/>
 
     <rule ref="Symfony">
-        <exclude name="Squiz.Commenting.FunctionComment.Missing"/>
-        <exclude name="Squiz.Commenting.ClassComment.Missing"/>
+        <exclude name="Symfony.Commenting.ClassComment.Missing"/>
+        <exclude name="Symfony.Commenting.FunctionComment.Missing"/>
+        <exclude name="Symfony.Commenting.FunctionComment.MissingParamTag"/>
+        <exclude name="Symfony.Commenting.FunctionComment.MissingReturn"/>
+        <exclude name="Symfony.Whitespace.CommaSpacing.Invalid"/>
+        <exclude name="Symfony.Functions.Arguments.Invalid"/>
     </rule>
 
     <file>src/</file>

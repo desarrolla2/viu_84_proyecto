@@ -12,7 +12,7 @@
 
 namespace App\Tests\Unit\Domain\Reader\Service;
 
-use App\Domain\Reader\Entity\DummyAgreement;
+use App\Domain\Reader\Entity\DummyAgreementInterface;
 use App\Domain\Reader\Service\Dummy\DummyProcessor;
 use App\Domain\Reader\Service\ReaderEngine;
 use App\Domain\Reader\ValueObject\Text;
@@ -44,6 +44,6 @@ class EngineTest extends TestCase
         $document = new Text($fileName);
         $text = $engine->execute($document);
 
-        $this->assertInstanceOf(DummyAgreement::class, $text);
+        $this->assertInstanceOf(DummyAgreementInterface::class, $text);
     }
 }

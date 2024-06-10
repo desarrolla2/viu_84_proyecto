@@ -12,7 +12,7 @@ namespace App\Domain\Reader\Entity;
 
 use DateTimeInterface;
 
-interface Agreement
+interface AgreementInterface
 {
     public function date(): DateTimeInterface;
 

@@ -11,7 +11,7 @@
 namespace App\Infrastructure\Reader\Service\ChatGPT;
 
 use App\Domain\Component\HttpClient\HttpClientInterface;
-use App\Domain\Reader\Entity\Agreement;
+use App\Domain\Reader\Entity\AgreementInterface;
 use App\Domain\Reader\Service\ProcessorInterface;
 use App\Domain\Reader\ValueObject\Text;
 use Symfony\Component\HttpFoundation\Request;
@@ -40,7 +40,7 @@ abstract readonly class AbstractAgreementProcessor implements ProcessorInterface
         return -1;
     }
 
-    public function execute(Text $text): ?Agreement
+    public function execute(Text $text): ?AgreementInterface
     {
         $content = $this->contentForContent($text);
         $response = $this->request($content);

@@ -16,6 +16,7 @@ RUN apt-get install -y \
     php8.2-dom \
     php8.2-fpm \
     php8.2-mbstring \
+    php8.2-xdebug \
     php8.2-xml \
     php8.2-zip \
     poppler-utils
