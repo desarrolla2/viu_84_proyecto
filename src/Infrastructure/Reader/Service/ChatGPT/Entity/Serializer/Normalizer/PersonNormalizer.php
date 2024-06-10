@@ -1,4 +1,12 @@
 <?php
+/*
+ * This file is part of the Data Miner.
+ *
+ * Daniel González <daniel@devtia.com>
+ *
+ * This source file is subject to the license that is bundled
+ * with this source code in the file LICENSE.
+ */
 
 namespace App\Infrastructure\Reader\Service\ChatGPT\Entity\Serializer\Normalizer;
 
@@ -23,13 +31,13 @@ class PersonNormalizer implements NormalizerInterface, DenormalizerInterface
 
     public function getSupportedTypes(?string $format): array
     {
-        return [Person::class => true,];
+        return [Person::class => true, ];
     }
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): Person
     {
-        $name = $data['name']?? '';
-        $surname = $data['surname']?? '';
+        $name = $data['name'] ?? '';
+        $surname = $data['surname'] ?? '';
         $number = $data['number'] ?? '';
 
         return new Person($name, $surname, $number);
@@ -39,5 +47,4 @@ class PersonNormalizer implements NormalizerInterface, DenormalizerInterface
     {
         return $type === Person::class;
     }
-
 }

@@ -1,4 +1,12 @@
 <?php
+/*
+ * This file is part of the Data Miner.
+ *
+ * Daniel González <daniel@devtia.com>
+ *
+ * This source file is subject to the license that is bundled
+ * with this source code in the file LICENSE.
+ */
 
 namespace App\Infrastructure\Reader\Service\ChatGPT;
 
@@ -16,7 +24,7 @@ abstract readonly class AbstractAgreementProcessor implements ProcessorInterface
 
     public function __construct(protected SerializerInterface $serializer, private HttpClientInterface $httpClient, string $authenticationToken)
     {
-        $this->httpClient->withOptions(['auth_bearer' => $authenticationToken,]);
+        $this->httpClient->withOptions(['auth_bearer' => $authenticationToken, ]);
     }
 
     public function score(Text $text): int
@@ -40,7 +48,6 @@ abstract readonly class AbstractAgreementProcessor implements ProcessorInterface
         $agreement = $this->serializer->deserialize($response, $this->agreementClassName(), 'json');
 
         return $agreement ?? null;
-
     }
 
     abstract protected function agreementClassName(): string;
@@ -58,10 +65,10 @@ abstract readonly class AbstractAgreementProcessor implements ProcessorInterface
                     'role' => 'system',
                     'content' => 'Eres un abogado. Responde a cada pregunta con precisión. No justifiques tu respuesta. No des detalles adicionales.',
                 ],
-                ['role' => 'user', 'content' => $content,],
+                ['role' => 'user', 'content' => $content, ],
             ],
         ];
-        $response = $this->httpClient->request(Request::METHOD_POST, self::ENDPOINT, ['json' => $json,]);
+        $response = $this->httpClient->request(Request::METHOD_POST, self::ENDPOINT, ['json' => $json, ]);
 
         return $this->getMessageFromResponse($response);
     }

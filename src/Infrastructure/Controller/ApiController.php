@@ -1,4 +1,12 @@
 <?php
+/*
+ * This file is part of the Data Miner.
+ *
+ * Daniel González <daniel@devtia.com>
+ *
+ * This source file is subject to the license that is bundled
+ * with this source code in the file LICENSE.
+ */
 
 namespace App\Infrastructure\Controller;
 
@@ -8,6 +16,7 @@ use App\Domain\Reader\Entity\Agreement;
 use App\Domain\Reader\Entity\DummyAgreement;
 use App\Domain\Reader\Service\ReaderEngine;
 use App\Domain\Reader\ValueObject\Text as ReaderText;
+use ReflectionClass;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -37,7 +46,6 @@ class ApiController extends AbstractController
             $fileName = sprintf('%s.%s', hash('sha256', uniqid(get_called_class(), true)), pathinfo($data['name'], PATHINFO_EXTENSION));
             $path = sprintf('%s/%s', sys_get_temp_dir(), $fileName);
             file_put_contents($path, $file);
-
         } catch (FileException) {
             return $this->documentCouldNotBeProcessed();
         }
@@ -72,7 +80,7 @@ class ApiController extends AbstractController
         return new JsonResponse(
             [
                 'code' => Response::HTTP_OK,
-                'type_of_document' => (new \ReflectionClass($agreement))->getShortName(),
+                'type_of_document' => (new ReflectionClass($agreement))->getShortName(),
                 'content' => json_decode($content, true),
             ],
             Response::HTTP_OK

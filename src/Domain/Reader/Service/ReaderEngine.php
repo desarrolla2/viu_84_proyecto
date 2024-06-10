@@ -1,10 +1,19 @@
 <?php
+/*
+ * This file is part of the Data Miner.
+ *
+ * Daniel González <daniel@devtia.com>
+ *
+ * This source file is subject to the license that is bundled
+ * with this source code in the file LICENSE.
+ */
 
 namespace App\Domain\Reader\Service;
 
 use App\Domain\Reader\Entity\Agreement;
 use App\Domain\Reader\ValueObject\Text;
 use Psr\Log\LoggerInterface;
+use RuntimeException;
 
 class ReaderEngine
 {
@@ -37,7 +46,7 @@ class ReaderEngine
     {
         $processor = $this->getProcessor($document);
         if (!$processor) {
-            throw new \RuntimeException();
+            throw new RuntimeException();
         }
 
         $this->log(sprintf('Executing Processor "%s"', get_class($processor)));

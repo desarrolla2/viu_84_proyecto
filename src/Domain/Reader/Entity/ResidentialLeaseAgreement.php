@@ -1,11 +1,21 @@
 <?php
+/*
+ * This file is part of the Data Miner.
+ *
+ * Daniel González <daniel@devtia.com>
+ *
+ * This source file is subject to the license that is bundled
+ * with this source code in the file LICENSE.
+ */
 
 namespace App\Domain\Reader\Entity;
+
+use DateTimeInterface;
 
 readonly class ResidentialLeaseAgreement implements Agreement
 {
     public function __construct(
-        private \DateTimeInterface $date,
+        private DateTimeInterface $date,
         private Property $property,
         private array $landLords = [],
         private array $tenants = [],
@@ -18,7 +28,7 @@ readonly class ResidentialLeaseAgreement implements Agreement
         return round($this->monthlyRent, 2);
     }
 
-    public function date(): \DateTimeInterface
+    public function date(): DateTimeInterface
     {
         return $this->date;
     }

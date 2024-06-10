@@ -1,4 +1,12 @@
 <?php
+/*
+ * This file is part of the Data Miner.
+ *
+ * Daniel González <daniel@devtia.com>
+ *
+ * This source file is subject to the license that is bundled
+ * with this source code in the file LICENSE.
+ */
 
 namespace App\Infrastructure\Command;
 
@@ -8,6 +16,7 @@ use App\Domain\Reader\Entity\Agreement;
 use App\Domain\Reader\Entity\DummyAgreement;
 use App\Domain\Reader\Service\ReaderEngine;
 use App\Domain\Reader\ValueObject\Text as ReaderText;
+use ReflectionClass;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Helper\Table;
@@ -66,7 +75,7 @@ class AppCommand extends Command
 
         return [
             'code' => Response::HTTP_OK,
-            'type_of_document' => (new \ReflectionClass($agreement))->getShortName(),
+            'type_of_document' => (new ReflectionClass($agreement))->getShortName(),
             'content' => json_decode($content, true),
         ];
     }

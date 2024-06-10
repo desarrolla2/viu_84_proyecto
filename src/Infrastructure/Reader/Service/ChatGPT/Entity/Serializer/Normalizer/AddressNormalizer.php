@@ -1,4 +1,12 @@
 <?php
+/*
+ * This file is part of the Data Miner.
+ *
+ * Daniel González <daniel@devtia.com>
+ *
+ * This source file is subject to the license that is bundled
+ * with this source code in the file LICENSE.
+ */
 
 namespace App\Infrastructure\Reader\Service\ChatGPT\Entity\Serializer\Normalizer;
 
@@ -23,7 +31,7 @@ class AddressNormalizer implements NormalizerInterface, DenormalizerInterface
 
     public function getSupportedTypes(?string $format): array
     {
-        return [Address::class => true,];
+        return [Address::class => true, ];
     }
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): Address

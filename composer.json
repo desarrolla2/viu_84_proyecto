@@ -26,7 +26,9 @@
         "twig/twig": "^2.12|^3.0"
     },
     "require-dev": {
+        "escapestudios/symfony2-coding-standard": "^3.13",
         "phpunit/phpunit": "^9.5",
+        "squizlabs/php_codesniffer": "^3.10",
         "symfony/browser-kit": "^7.0",
         "symfony/css-selector": "^7.0",
         "symfony/maker-bundle": "^1.52",

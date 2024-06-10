@@ -1,10 +1,19 @@
 <?php
+/*
+ * This file is part of the Data Miner.
+ *
+ * Daniel González <daniel@devtia.com>
+ *
+ * This source file is subject to the license that is bundled
+ * with this source code in the file LICENSE.
+ */
 
 namespace App\Infrastructure\Reader\Service\ChatGPT\Entity\Serializer\Normalizer;
 
 use App\Domain\Reader\Entity\Person;
 use App\Domain\Reader\Entity\Vehicle;
 use App\Domain\Reader\Entity\VehicleSaleAndPurchaseAgreement;
+use DateTime;
 use Symfony\Component\DependencyInjection\Attribute\AutoconfigureTag;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
@@ -18,7 +27,7 @@ readonly class VehicleSaleAndPurchaseAgreementNormalizer implements NormalizerIn
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): VehicleSaleAndPurchaseAgreement
     {
-        $date = $data['date'] ? \DateTime::createFromFormat('Y-m-d', $data['date']) : '';
+        $date = $data['date'] ? DateTime::createFromFormat('Y-m-d', $data['date']) : '';
         $vehicle = $data['vehicle'] ? $this->vehicleNormalizer->denormalize($data['vehicle'], Vehicle::class) : new Vehicle('', '', '',);
         $sellers = $data['sellers'] ? array_map(function (array $item): Person {
             return $this->personNormalizer->denormalize($item, Person::class);

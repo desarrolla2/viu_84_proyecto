@@ -1,4 +1,12 @@
 <?php
+/*
+ * This file is part of the Data Miner.
+ *
+ * Daniel González <daniel@devtia.com>
+ *
+ * This source file is subject to the license that is bundled
+ * with this source code in the file LICENSE.
+ */
 
 namespace App\Infrastructure\Reader\Service\ChatGPT\Entity\Serializer\Normalizer;
 
@@ -6,6 +14,7 @@ use App\Domain\Reader\Entity\Address;
 use App\Domain\Reader\Entity\Person;
 use App\Domain\Reader\Entity\Property;
 use App\Domain\Reader\Entity\ResidentialLeaseAgreement;
+use DateTime;
 use Symfony\Component\DependencyInjection\Attribute\AutoconfigureTag;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
@@ -19,7 +28,7 @@ readonly class ResidentialLeaseAgreementNormalizer implements NormalizerInterfac
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): ResidentialLeaseAgreement
     {
-        $date = $data['date'] ? \DateTime::createFromFormat('Y-m-d', $data['date']) : '';
+        $date = $data['date'] ? DateTime::createFromFormat('Y-m-d', $data['date']) : '';
         $property = $data['property'] ? $this->propertyNormalizer->denormalize($data['property'], Property::class) : new Property(new Address('', '', '', ''));
         $landLords = $data['landlords'] ? array_map(function (array $item): Person {
             return $this->personNormalizer->denormalize($item, Person::class);
@@ -55,7 +64,7 @@ readonly class ResidentialLeaseAgreementNormalizer implements NormalizerInterfac
 
     public function getSupportedTypes(?string $format): array
     {
-        return [ResidentialLeaseAgreement::class => true,];
+        return [ResidentialLeaseAgreement::class => true, ];
     }
 
     public function supportsDenormalization(mixed $data, string $type, ?string $format = null, array $context = []): bool

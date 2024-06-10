@@ -1,4 +1,12 @@
 <?php
+/*
+ * This file is part of the Data Miner.
+ *
+ * Daniel González <daniel@devtia.com>
+ *
+ * This source file is subject to the license that is bundled
+ * with this source code in the file LICENSE.
+ */
 
 namespace App\Infrastructure\Component\HttpClient;
 
@@ -32,7 +40,7 @@ class SymfonyHttpClient implements HttpClientInterface
 
 
             if ($response->getStatusCode() !== Response::HTTP_OK) {
-                $this->log(sprintf('[response]: "%s"', $response->getStatusCode()), ['body' => $response->getContent(),]);
+                $this->log(sprintf('[response]: "%s"', $response->getStatusCode()), ['body' => $response->getContent(), ]);
 
                 throw new RuntimeException($response->getContent());
             }
@@ -40,7 +48,7 @@ class SymfonyHttpClient implements HttpClientInterface
             return $response->getContent();
         });
 
-        $this->log(sprintf('[response]: "%s"', Response::HTTP_OK), ['body' => $responseContent,]);
+        $this->log(sprintf('[response]: "%s"', Response::HTTP_OK), ['body' => $responseContent, ]);
 
         return json_decode($responseContent, true);
     }
