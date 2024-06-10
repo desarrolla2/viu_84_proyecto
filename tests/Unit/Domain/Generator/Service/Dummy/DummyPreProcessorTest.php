@@ -21,7 +21,7 @@ class DummyPreProcessorTest extends TestCase
     public function testPreProcessor()
     {
         $preProcessor = new DummyPreProcessor();
-        $path = '/var/www/tests/data/output/001/001.pdf';
+        $path = __DIR__.'/../../../../../data/output/001/001.pdf';
         $document = new Document($path);
 
         $preProcessor->execute($document);

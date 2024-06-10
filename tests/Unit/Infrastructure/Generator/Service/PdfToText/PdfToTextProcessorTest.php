@@ -24,12 +24,12 @@ class PdfToTextProcessorTest extends TestCase
     public function dataProviderForTestProcessor(): array
     {
         return [
-            ['/var/www/tests/data/output/001/001.pdf', ['CONTRATO DE ARRENDAMIENTO DE VIVIENDA']],
-            ['/var/www/tests/data/output/001/002.pdf', ['CONTRATO DE ARRENDAMIENTO DE VIVIENDA']],
-            ['/var/www/tests/data/output/001/003.pdf', ['CONTRATO DE ARRENDAMIENTO DE VIVIENDA']],
-            ['/var/www/tests/data/output/001/004.pdf', ['CONTRATO DE ARRENDAMIENTO DE VIVIENDA']],
-            ['/var/www/tests/data/output/001/005.pdf', ['CONTRATO DE ARRENDAMIENTO DE VIVIENDA']],
-            ['/var/www/tests/data/output/001/006.pdf', ['CONTRATO DE ARRENDAMIENTO DE VIVIENDA']],
+            [__DIR__.'/../../../../../data/output/001/001.pdf', ['CONTRATO DE ARRENDAMIENTO DE VIVIENDA']],
+            [__DIR__.'/../../../../../data/output/001/002.pdf', ['CONTRATO DE ARRENDAMIENTO DE VIVIENDA']],
+            [__DIR__.'/../../../../../data/output/001/003.pdf', ['CONTRATO DE ARRENDAMIENTO DE VIVIENDA']],
+            [__DIR__.'/../../../../../data/output/001/004.pdf', ['CONTRATO DE ARRENDAMIENTO DE VIVIENDA']],
+            [__DIR__.'/../../../../../data/output/001/005.pdf', ['CONTRATO DE ARRENDAMIENTO DE VIVIENDA']],
+            [__DIR__.'/../../../../../data/output/001/006.pdf', ['CONTRATO DE ARRENDAMIENTO DE VIVIENDA']],
         ];
     }
 

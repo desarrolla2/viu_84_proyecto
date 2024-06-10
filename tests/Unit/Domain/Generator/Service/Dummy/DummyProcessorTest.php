@@ -22,7 +22,7 @@ class DummyProcessorTest extends TestCase
     public function testProcessor()
     {
         $engine = new DummyProcessor();
-        $document = new Document('/var/www/tests/data/output/001/001.pdf');
+        $document = new Document(__DIR__.'/../../../../../data/output/001/001.pdf');
         $text = $engine->execute($document);
 
         $this->assertInstanceOf(Text::class, $text);

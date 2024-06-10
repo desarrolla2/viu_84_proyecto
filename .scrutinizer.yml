@@ -6,11 +6,10 @@ build:
     dependencies:
         before:
             - cp docker/.env.dist .env
+            - cp .scrutinizer/phpunit.xml phpunit.xml
+            - sudo apt-get update
+            - sudo apt-get install -y poppler-utils
             - composer install --prefer-dist --no-interaction
-
-    tests:
-        override:
-            - php vendor/bin/phpunit
 
 filter:
     excluded_paths:
