@@ -2,10 +2,3 @@ build:
     environment:
         php:
             version: 8.2.0
-    tests:
-        override:
-            -
-                command: vendor/bin/phpunit -c phpunit.xml.dist --testsuite integration --testsuite unit --coverage-clover=coverage.xml
-                coverage:
-                    file: coverage.xml
-                    format: php-clover
