@@ -24,4 +24,4 @@ jobs:
                 run: make php-composer-install
 
             -   name: Run tests
-                run: make app-tests
+                run: docker-compose run -T php bash -c "vendor/bin/phpunit --testsuite integration --testsuite unit"
