@@ -10,14 +10,14 @@
 
 namespace App\Infrastructure\Reader\Service\ChatGPT;
 
-use App\Domain\Reader\Entity\ResidentialLeaseAgreementInterface;
+use App\Domain\Reader\Entity\ResidentialLeaseAgreement;
 use App\Domain\Reader\ValueObject\Text;
 
 readonly class ResidentialLeaseAgreementProcessor extends AbstractAgreementProcessor
 {
     protected function agreementClassName(): string
     {
-        return ResidentialLeaseAgreementInterface::class;
+        return ResidentialLeaseAgreement::class;
     }
 
     protected function contentForScore(Text $text): string

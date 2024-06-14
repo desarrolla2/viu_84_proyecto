@@ -13,7 +13,7 @@
 namespace App\Tests\Functional\Infrastructure\Reader\Service\ChatGPT;
 
 use App\Domain\Reader\Entity\Person;
-use App\Domain\Reader\Entity\ResidentialLeaseAgreementInterface;
+use App\Domain\Reader\Entity\ResidentialLeaseAgreement;
 use App\Domain\Reader\Service\ReaderEngine;
 use App\Domain\Reader\ValueObject\Text;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
@@ -57,10 +57,10 @@ class ResidentialLeaseAgreementProcessorTest extends KernelTestCase
 
         $engine = $container->get(ReaderEngine::class);
 
-        /** @var ResidentialLeaseAgreementInterface $agreement */
+        /** @var ResidentialLeaseAgreement $agreement */
         $agreement = $engine->execute($text);
 
-        $this->assertInstanceOf(ResidentialLeaseAgreementInterface::class, $agreement);
+        $this->assertInstanceOf(ResidentialLeaseAgreement::class, $agreement);
         $this->assertPersons($agreement->landLords(), $landLords['numbers']);
         $this->assertPersons($agreement->tenants(), $tenants['numbers']);
         $this->assertEquals($date, $agreement->date()?->format('d/m/Y'));

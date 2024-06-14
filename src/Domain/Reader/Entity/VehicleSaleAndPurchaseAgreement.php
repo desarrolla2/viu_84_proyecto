@@ -12,7 +12,7 @@ namespace App\Domain\Reader\Entity;
 
 use DateTimeInterface;
 
-readonly class VehicleSaleAndPurchaseAgreementInterface implements AgreementInterface
+readonly class VehicleSaleAndPurchaseAgreement implements AgreementInterface
 {
     public function __construct(
         private DateTimeInterface $date,
